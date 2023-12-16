@@ -15,7 +15,7 @@ const baseQuery: BaseQueryFn = fetchBaseQuery({
     }
 })
 
-const baseQueryWithReauth = async (args: any, api: BaseQueryApi, extraOptions: {}) => {
+const baseQueryWithReauth = async (args: any, api: BaseQueryApi, extraOptions: object) => {
     let result = await baseQuery(args, api, extraOptions)
     const state = api.getState() as RootState
 

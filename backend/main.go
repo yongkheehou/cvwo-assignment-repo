@@ -1,18 +1,24 @@
 package main
 
 import (
-	"fmt"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/yongkheehou/cvwo-assignment-repo/backend/initializers"
 )
 
+func init() {
+	initializers.LoadEnvVariables()
+}
+
 func main() {
-	fmt.Println("Hello 2")
-	// r := gin.Default()
+	r := gin.Default()
 
-	// r.GET("/ping", func(c *gin.Context) {
-	// 	c.JSON(http.StatusOK, gin.H{
-	// 		"message": "pong",
-	// 	})
-	// })
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
+	})
 
-	// r.Run(":4000") // listen and serve on 0.0.0.0:4000
+	r.Run(":4000") // listen and serve on 0.0.0.0:4000
 }

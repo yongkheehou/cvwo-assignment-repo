@@ -1,6 +1,6 @@
 contents
 
-user manual
+user manual (reproduction guide + env var)
 
 ./backend environment variables
 - BACKEND_PORT

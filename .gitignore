@@ -10,5 +10,6 @@
 # misc
 .DS_Store
 ./frontend/.env
+./backend/.env
 
 npm-debug.log*

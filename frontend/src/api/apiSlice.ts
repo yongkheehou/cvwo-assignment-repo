@@ -1,9 +1,10 @@
 import { BaseQueryApi, BaseQueryFn, FetchBaseQueryError, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials, logOut } from '../features/auth/authSlice'
 import { RootState } from '../store'
+import { BACKEND_URL } from '../utils/constants'
 
 const baseQuery: BaseQueryFn = fetchBaseQuery({
-    baseUrl: 'http://localhost:3500',
+    baseUrl: BACKEND_URL, 
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const state = getState() as RootState

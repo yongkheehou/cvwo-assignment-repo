@@ -5,7 +5,7 @@ import React from 'react';
 import { setCredentials } from './authSlice';
 import { useLoginMutation } from './authApiSlice';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch } from '../../hooks/reduxHooks';
 
 export default function Login() {
   const userRef = useRef<HTMLInputElement>(null);

@@ -11,6 +11,6 @@
 .DS_Store
 ./frontend/.env
 ./backend/.env
-./backend/data
+./backend/data/db
 
 npm-debug.log*

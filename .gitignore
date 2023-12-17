@@ -1,5 +1,7 @@
-# dependencies
-/frontend/node_modules
+# folders
+frontend/node_modules
+frontend/.env
+backend/.env
 
 # testing
 /coverage
@@ -9,8 +11,5 @@
 
 # misc
 .DS_Store
-/frontend/.env
-/backend/.env
-/backend/data
 
 npm-debug.log*

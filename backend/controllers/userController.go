@@ -1,9 +1,12 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/yongkheehou/cvwo-assignment-repo/backend/initializers"
 	"github.com/yongkheehou/cvwo-assignment-repo/backend/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func GetUsers(c *gin.Context) {
@@ -12,10 +15,45 @@ func GetUsers(c *gin.Context) {
 	c.JSON(200, &users)
 }
 
-func CreateUser(c *gin.Context) {
-	var user models.User
-	c.BindJSON(&user)
-	initializers.UserDB.Create(&user)
+func SignUp(c *gin.Context) {
+	// get email/pass off req body
+	var payload models.User
+	if c.BindJSON(&payload) != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to read user",
+		})
+
+		return
+	}
+
+	// hash the password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(payload.Password), 10)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to hash password",
+		})
+
+		return
+	}
+
+	// create the user
+	user := models.User{
+		Id:       payload.Id,
+		Name:     payload.Name,
+		Email:    payload.Email,
+		Password: string(hashedPassword),
+	}
+	result := initializers.UserDB.Create(&user)
+
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to create user",
+		})
+
+		return
+	}
+
+	// respond
 	c.JSON(200, &user)
 }
 

@@ -38,7 +38,6 @@ func SignUp(c *gin.Context) {
 
 	// create the user
 	user := models.User{
-		Id:       payload.Id,
 		Name:     payload.Name,
 		Email:    payload.Email,
 		Password: string(hashedPassword),

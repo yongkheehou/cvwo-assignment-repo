@@ -8,9 +8,9 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+var UserDB *gorm.DB
 
-func Connect() {
+func ConnectUserDB() {
 	POSTGRES_URL := os.Getenv("POSTGRES_URL")
 
 	db, err := gorm.Open(postgres.Open(POSTGRES_URL), &gorm.Config{})
@@ -21,5 +21,5 @@ func Connect() {
 
 	db.AutoMigrate(&models.User{})
 
-	DB = db
+	UserDB = db
 }

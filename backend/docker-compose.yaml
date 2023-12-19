@@ -32,4 +32,5 @@ volumes:
   db:
 networks:
   backend:
+    name: cvwo
     driver: bridge

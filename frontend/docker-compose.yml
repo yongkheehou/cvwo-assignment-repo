@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  react_page:
+    image: app-prod
+    build:
+      context: .
+      target: production
+    ports:
+      - "80:80"
+    networks:
+      - cvwo
+    env_file:
+      - .env
+networks:
+  cvwo:
+    external: true

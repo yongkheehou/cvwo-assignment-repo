@@ -102,7 +102,7 @@ func Login(c *gin.Context) {
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to create JWT",
 		})
 
@@ -120,7 +120,7 @@ func Logout(c *gin.Context) {
 	c.SetCookie("Auth", "", 0, "", "", true, true)
 }
 
-func ValidateCookie(c *gin.Context) {
+func ProfilePage(c *gin.Context) {
 	user, _ := c.Get("user")
 
 	c.JSON(200, gin.H{

@@ -17,7 +17,15 @@ func Auth(c *gin.Context) {
 	tokenString, err := c.Cookie("Auth")
 
 	if err != nil {
-		c.AbortWithStatus(http.StatusUnauthorized)
+		if err == http.ErrNoCookie {
+			c.AbortWithStatus(http.StatusUnauthorized)
+
+			return
+		}
+
+		c.AbortWithStatus(http.StatusBadRequest)
+
+		return
 	}
 
 	// Validate cookie
@@ -31,7 +39,15 @@ func Auth(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.AbortWithStatus(http.StatusUnauthorized)
+		if err == jwt.ErrSignatureInvalid {
+			c.AbortWithStatus(http.StatusUnauthorized)
+
+			return
+		}
+
+		c.AbortWithStatus(http.StatusBadRequest)
+
+		return
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {

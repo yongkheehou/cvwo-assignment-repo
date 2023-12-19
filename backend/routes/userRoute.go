@@ -8,7 +8,7 @@ import (
 
 func UserRoute(r *gin.Engine) {
 	r.GET("/getusers", controllers.GetUsers)
-	r.GET("/validate", middleware.Auth, controllers.ValidateCookie)
+	r.GET("/:id", middleware.Auth, controllers.ProfilePage)
 	r.POST("/signup", controllers.SignUp)
 	r.POST("/login", controllers.Login)
 	r.POST("/logout", controllers.Logout)

@@ -122,11 +122,13 @@ func Login(c *gin.Context) {
 
 	c.SetCookie("Auth", tokenString, time, "", "", true, true)
 
-	c.JSON(200, gin.H{})
+	c.JSON(200, gin.H{
+		"token": tokenString,
+	})
 }
 
 func Logout(c *gin.Context) {
-	c.SetCookie("Auth", "", 0, "", "", true, true)
+	c.SetCookie("Auth", "", -1, "", "", true, true)
 }
 
 func ProfilePage(c *gin.Context) {
@@ -221,7 +223,11 @@ func RefreshToken(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, "check environment REFRESH_TOKEN_DURATION")
 		}
 
-		c.SetCookie("Auth", tokenString, time, "", "", true, true)
+		c.SetCookie("Refresh", tokenString, time, "", "", true, true)
+
+		c.JSON(200, gin.H{
+			"token": tokenString,
+		})
 
 	} else {
 		c.JSON(http.StatusUnauthorized, gin.H{

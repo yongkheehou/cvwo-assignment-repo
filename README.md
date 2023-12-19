@@ -22,6 +22,11 @@ deployment
 - backend and frontend EC2 instances are in the same VPC, which allows incoming traffic to reach the frontend instance only
 - configure HTTPS?
 
+alternative deployment
+- push container to private registry in AWS ECR
+- create fargate task in ECS
+
 extensions to project
+- migrate docker postgres db to aws aurora managed postgres instance
 
 link to report + reflection on project

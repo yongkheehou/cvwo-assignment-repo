@@ -1,8 +1,10 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -41,9 +43,9 @@ func SignUp(c *gin.Context) {
 
 	// create the user
 	user := models.User{
-		Name:     payload.Name,
-		Email:    payload.Email,
-		Password: string(hashedPassword),
+		Username:   payload.Username,
+		Password:   string(hashedPassword),
+		ProfilePic: payload.ProfilePic,
 	}
 	result := initializers.UserDB.Create(&user)
 
@@ -72,11 +74,11 @@ func Login(c *gin.Context) {
 
 	// fetch user
 	var user models.User
-	initializers.UserDB.First(&user, "email = ?", payload.Email)
+	initializers.UserDB.First(&user, "username = ?", payload.Username)
 
 	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid email or password",
+			"error": "Invalid username or password",
 		})
 
 		return
@@ -110,8 +112,15 @@ func Login(c *gin.Context) {
 	}
 
 	c.SetSameSite(http.SameSiteLaxMode)
+
 	// revise cookie settings for production
-	c.SetCookie("Auth", tokenString, 3600, "", "", true, true)
+	time, err := strconv.Atoi(os.Getenv("ACCESS_TOKEN_DURATION"))
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "check environment ACCESS_TOKEN_DURATION")
+	}
+
+	c.SetCookie("Auth", tokenString, time, "", "", true, true)
 
 	c.JSON(200, gin.H{})
 }
@@ -126,6 +135,101 @@ func ProfilePage(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": user,
 	})
+}
+
+func RefreshToken(c *gin.Context) {
+	// Get Cookie
+	tokenString, err := c.Cookie("Auth")
+
+	if err != nil {
+		if err == http.ErrNoCookie {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"error": "No cookies",
+			})
+
+			return
+		}
+
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Bad request",
+		})
+
+		return
+	}
+
+	// Validate cookie
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// check for correct signing method
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return []byte(os.Getenv("SECRET_KEY")), nil
+	})
+
+	if err != nil {
+		if err == jwt.ErrSignatureInvalid {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"error": "invalid JWT signature",
+			})
+
+			return
+		}
+
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "bad request",
+		})
+
+		return
+	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok {
+		// Find user
+		var user models.User
+		initializers.UserDB.First(&user, claims["sub"])
+
+		if user.ID == 0 {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"error": "unauthorized user",
+			})
+
+			return
+		}
+
+		// generate JWT and return it
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"sub": user.ID,
+			"exp": time.Now().Add(time.Hour).Unix(),
+		})
+
+		tokenString, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Failed to create JWT",
+			})
+
+			return
+		}
+
+		c.SetSameSite(http.SameSiteLaxMode)
+
+		// revise cookie settings for production
+		time, err := strconv.Atoi(os.Getenv("REFRESH_TOKEN_DURATION"))
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, "check environment REFRESH_TOKEN_DURATION")
+		}
+
+		c.SetCookie("Auth", tokenString, time, "", "", true, true)
+
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized",
+		})
+
+		return
+	}
 }
 
 func DeleteUser(c *gin.Context) {

@@ -4,5 +4,8 @@ rebuild:
 run:
 	docker-compose up
 
+update:
+	docker-compose up -d --build
+
 clear:
 	docker-compose down --rmi all --volumes

@@ -111,9 +111,13 @@ func Login(c *gin.Context) {
 
 	c.SetSameSite(http.SameSiteLaxMode)
 	// revise cookie settings for production
-	c.SetCookie("Auth", tokenString, 3600, "", "", false, true)
+	c.SetCookie("Auth", tokenString, 3600, "", "", true, true)
 
 	c.JSON(200, gin.H{})
+}
+
+func Logout(c *gin.Context) {
+	c.SetCookie("Auth", "", 0, "", "", true, true)
 }
 
 func ValidateCookie(c *gin.Context) {

@@ -6,3 +6,6 @@ run:
 
 clear:
 	docker-compose down --rmi all --volumes
+
+clear-backend:
+	docker-compose down --rmi backend-server:latest

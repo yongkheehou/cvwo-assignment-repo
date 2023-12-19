@@ -18,12 +18,16 @@ func Auth(c *gin.Context) {
 
 	if err != nil {
 		if err == http.ErrNoCookie {
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"error": "No cookies",
+			})
 
 			return
 		}
 
-		c.AbortWithStatus(http.StatusBadRequest)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Bad request",
+		})
 
 		return
 	}
@@ -40,12 +44,16 @@ func Auth(c *gin.Context) {
 
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"error": "invalid JWT signature",
+			})
 
 			return
 		}
 
-		c.AbortWithStatus(http.StatusBadRequest)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "bad request",
+		})
 
 		return
 	}
@@ -53,7 +61,11 @@ func Auth(c *gin.Context) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
 		// Check exp
 		if float64(time.Now().Unix()) > claims["exp"].(float64) {
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"error": "expired JWT",
+			})
+
+			return
 		}
 
 		// Find user
@@ -61,7 +73,11 @@ func Auth(c *gin.Context) {
 		initializers.UserDB.First(&user, claims["sub"])
 
 		if user.ID == 0 {
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"error": "unauthorized user",
+			})
+
+			return
 		}
 
 		// Attach to req
@@ -70,6 +86,10 @@ func Auth(c *gin.Context) {
 		// Continue
 		c.Next()
 	} else {
-		c.AbortWithStatus(http.StatusUnauthorized)
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized",
+		})
+
+		return
 	}
 }

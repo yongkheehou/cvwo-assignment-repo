@@ -116,6 +116,14 @@ func Login(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
+func ValidateCookie(c *gin.Context) {
+	user, _ := c.Get("user")
+
+	c.JSON(200, gin.H{
+		"message": user,
+	})
+}
+
 func DeleteUser(c *gin.Context) {
 	var user models.User
 	initializers.UserDB.Where("id = ?", c.Param("id")).Delete(&user)

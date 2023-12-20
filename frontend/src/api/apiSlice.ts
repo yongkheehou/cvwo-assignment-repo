@@ -13,7 +13,8 @@ const baseQuery: BaseQueryFn = fetchBaseQuery({
             headers.set("authorization", `Bearer ${token}`)
         }
         return headers
-    }
+    },
+    mode: 'no-cors'
 })
 
 const baseQueryWithReauth = async (args: any, api: BaseQueryApi, extraOptions: object) => {
@@ -46,5 +47,14 @@ const baseQueryWithReauth = async (args: any, api: BaseQueryApi, extraOptions: o
 
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReauth,
-    endpoints: builder => ({})
+    endpoints: (builder) => ({
+      updateUser: builder.query({
+        query: (user: Record<string, string>) => ({
+          username: user.user,
+          password: user.pwd,
+          method: 'PUT',
+          body: user // Body is automatically converted to json with the correct headers
+        }),
+      })
+    })
 })

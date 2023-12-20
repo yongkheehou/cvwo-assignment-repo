@@ -63,7 +63,7 @@ func SignUp(c *gin.Context) {
 
 func Login(c *gin.Context) {
 	// get email/pass
-	var payload models.User
+	var payload models.Payload
 	if c.BindJSON(&payload) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to read payload",

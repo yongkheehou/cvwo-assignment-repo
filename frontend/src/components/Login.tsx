@@ -2,10 +2,10 @@ import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 
-import { setCredentials } from './authSlice';
-import { useLoginMutation } from './authApiSlice';
+import { setCredentials } from '../features/auth/authSlice';
+import { useLoginMutation } from '../features/auth/authApiSlice';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import { useAppDispatch } from '../../hooks/reduxHooks';
+import { useAppDispatch } from '../hooks/reduxHooks';
 
 export default function Login() {
   const userRef = useRef<HTMLInputElement>(null);

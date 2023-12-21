@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axiosInstance from '../../api/axiosInstance';
-import { User, UserCompleteData, AuthApiState } from './authModels';
+import AxiosInstance from '../../api/AxiosInstance';
+import { User, UserCompleteData, AuthApiState } from './AuthModels';
 
 const initialState: AuthApiState = {
   basicUserInfo: localStorage.getItem('userInfo')
@@ -12,7 +12,7 @@ const initialState: AuthApiState = {
 };
 
 export const login = createAsyncThunk('login', async (data: User) => {
-  const response = await axiosInstance.post('/login', data);
+  const response = await AxiosInstance.post('/login', data);
   const resData = response.data;
 
   localStorage.setItem('userInfo', JSON.stringify(resData));
@@ -21,7 +21,7 @@ export const login = createAsyncThunk('login', async (data: User) => {
 });
 
 export const signup = createAsyncThunk('signup', async (data: User) => {
-  const response = await axiosInstance.post('/signup', data);
+  const response = await AxiosInstance.post('/signup', data);
   const resData = response.data;
 
   localStorage.setItem('userInfo', JSON.stringify(resData));
@@ -30,7 +30,7 @@ export const signup = createAsyncThunk('signup', async (data: User) => {
 });
 
 export const logout = createAsyncThunk('logout', async () => {
-  const response = await axiosInstance.post('/logout', {});
+  const response = await AxiosInstance.post('/logout', {});
   const resData = response.data;
 
   localStorage.removeItem('userInfo');
@@ -41,7 +41,7 @@ export const logout = createAsyncThunk('logout', async () => {
 export const getUser = createAsyncThunk(
   'users/profile',
   async (userId: string) => {
-    const response = await axiosInstance.get(`/users/${userId}`);
+    const response = await AxiosInstance.get(`/users/${userId}`);
     return response.data;
   },
 );

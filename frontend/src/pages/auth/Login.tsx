@@ -1,6 +1,6 @@
-import { login } from '../../features/auth/authSlice';
-import { LOGIN } from '../../utils/constants';
-import Base from './base';
+import { login } from '../../features/auth/AuthSlice';
+import { LOGIN } from '../../utils/Constants';
+import Base from './Base';
 
 export default function Login() {
   return Base(login, LOGIN);

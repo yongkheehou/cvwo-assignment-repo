@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { useAppSelector } from '../hooks/reduxHooks';
+import { useAppSelector } from '../hooks/ReduxHooks';
 import { Navigate } from 'react-router-dom';
-import NavBar from '../components/navBar/NavBar';
+import NavBar from '../components/navBar/Base';
 
 const Layout = () => {
   const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);

@@ -11,14 +11,14 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/reduxHooks';
+import { useAppDispatch } from '../../hooks/ReduxHooks';
 import React from 'react';
-import { User } from '../../features/auth/authModels';
+import { User } from '../../features/auth/AuthModels';
 import {
   AsyncThunk,
   AsyncThunkConfig,
 } from '@reduxjs/toolkit/dist/createAsyncThunk';
-import { LOGIN, SIGNUP } from '../../utils/constants';
+import { LOGIN, SIGNUP } from '../../utils/Constants';
 
 export default function Base(
   onClick: AsyncThunk<any, User, AsyncThunkConfig>,

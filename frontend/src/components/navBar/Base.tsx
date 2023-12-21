@@ -13,11 +13,11 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ForumIcon from '@mui/icons-material/Forum';
-import { LOGIN, SIGNUP } from '../../utils/constants';
+import { LOGIN, SIGNUP } from '../../utils/Constants';
 
 const settings = ['Profile', 'Logout'];
 
-function NavBar() {
+export default function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
@@ -172,4 +172,3 @@ function NavBar() {
     </AppBar>
   );
 }
-export default NavBar;

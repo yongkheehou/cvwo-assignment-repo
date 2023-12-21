@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { BACKEND_URL } from '../utils';
+import { BACKEND_URL } from '../utils/Constants';
 
 // Create an Axios instance with default options
-const axiosInstance = axios.create({
+const AxiosInstance = axios.create({
   baseURL: BACKEND_URL,
   withCredentials: true,
 });
 
-export default axiosInstance;
+export default AxiosInstance;

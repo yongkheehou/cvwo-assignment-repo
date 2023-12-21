@@ -20,6 +20,8 @@ import {
 } from '@reduxjs/toolkit/dist/createAsyncThunk';
 import { LOGIN, SIGNUP } from '../../utils/Constants';
 import authSchema from './AuthModels';
+import { showNotification } from '../../features/auth/NotifSlice';
+import { NotificationType } from '../../features/auth/AuthModels';
 
 export default function Base(
   onClick: AsyncThunk<any, User, AsyncThunkConfig>,
@@ -48,7 +50,13 @@ export default function Base(
         console.error(e);
       }
     } catch (e) {
-      console.error(e);
+      dispatch(
+        showNotification({
+          message:
+            'Check your email and password meet the complexity requirements',
+          type: NotificationType.Error,
+        }),
+      );
     }
   };
 

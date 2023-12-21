@@ -7,10 +7,12 @@ import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import Layout from './layouts/Layout';
 import ProtectedLayout from './layouts/ProtectedLayout';
+import NotifBar from './components/auth/notifBar';
 
 function App() {
   return (
     <>
+      <NotifBar />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/login" element={<Login />} />

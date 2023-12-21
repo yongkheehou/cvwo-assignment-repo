@@ -96,7 +96,7 @@ export default function Base(
               sx={{ mt: 3, mb: 2 }}
               onClick={handleClick}
             >
-              Login
+              {action}
             </Button>
             <Grid container justifyContent={'flex-end'}>
               {action == SIGNUP && (

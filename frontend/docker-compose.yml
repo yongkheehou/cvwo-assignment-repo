@@ -10,8 +10,6 @@ services:
       - "80:80"
     networks:
       - cvwo
-    env_file:
-      - .env
 networks:
   cvwo:
     external: true

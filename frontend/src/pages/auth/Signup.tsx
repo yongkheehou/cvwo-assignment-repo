@@ -1,5 +1,5 @@
 import { signup } from '../../features/auth/authSlice';
-import { SIGNUP } from '../../utils';
+import { SIGNUP } from '../../utils/constants';
 import Base from './base';
 
 export default function Signup() {

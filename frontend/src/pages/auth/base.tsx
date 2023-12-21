@@ -1,4 +1,4 @@
-import { LockOutlined } from '@mui/icons-material';
+import { AppRegistration, Login } from '@mui/icons-material';
 import {
   Container,
   CssBaseline,
@@ -60,7 +60,8 @@ export default function Base(
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'primary.light' }}>
-            <LockOutlined />
+            {action == SIGNUP && <AppRegistration />}
+            {action == LOGIN && <Login />}
           </Avatar>
           <Typography variant="h5">{action}</Typography>
           <Box sx={{ mt: 1 }}>

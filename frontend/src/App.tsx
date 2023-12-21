@@ -2,30 +2,25 @@ import React from 'react';
 import './App.css';
 
 import { Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import Public from './components/Public';
-import Login from './components/Login';
-import Welcome from './components/Welcome';
-import RequireAuth from './features/auth/RequireAuth';
-// import UsersList from './features/users/UsersList'
+import Home from './pages/Home';
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
+import Layout from './layouts/Layout';
+import ProtectedLayout from './layouts/ProtectedLayout';
 
 function App() {
   return (
-    <div>
+    <>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* public routes */}
-          <Route index element={<Public />} />
-          <Route path="login" element={<Login />} />
-
-          {/* protected routes */}
-          <Route element={<RequireAuth />}>
-            <Route path="welcome" element={<Welcome />} />
-            {/* <Route path="userslist" element={<UsersList />} /> */}
-          </Route>
+        <Route element={<Layout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
+        <Route element={<ProtectedLayout />}>
+          <Route path="/" element={<Home />} />
         </Route>
       </Routes>
-    </div>
+    </>
   );
 }
 

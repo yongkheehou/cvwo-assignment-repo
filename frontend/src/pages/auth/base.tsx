@@ -19,7 +19,7 @@ import {
   AsyncThunkConfig,
 } from '@reduxjs/toolkit/dist/createAsyncThunk';
 import { LOGIN, SIGNUP } from '../../utils/Constants';
-import authSchema from './authModels';
+import authSchema from './AuthModels';
 
 export default function Base(
   onClick: AsyncThunk<any, User, AsyncThunkConfig>,

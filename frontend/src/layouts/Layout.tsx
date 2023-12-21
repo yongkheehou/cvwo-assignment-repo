@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { useAppSelector } from '../hooks/reduxHooks';
 import { Navigate } from 'react-router-dom';
+import NavBar from '../components/navBar/NavBar';
 
 const Layout = () => {
   const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
@@ -12,6 +13,7 @@ const Layout = () => {
 
   return (
     <>
+      <NavBar />
       <Outlet />
     </>
   );

@@ -69,7 +69,7 @@ export default function Base(
               required
               fullWidth
               id="username"
-              label="username"
+              label="Username"
               name="username"
               autoFocus
               value={username}
@@ -100,10 +100,10 @@ export default function Base(
             </Button>
             <Grid container justifyContent={'flex-end'}>
               {action == SIGNUP && (
-                <Link to="/signup">Already have an account? Login!</Link>
+                <Link to="/login">Already have an account? Login!</Link>
               )}
               {action == LOGIN && (
-                <Link to="/login">Dont have an account? Sign Up!</Link>
+                <Link to="/signup">Dont have an account? Sign Up!</Link>
               )}
             </Grid>
           </Box>

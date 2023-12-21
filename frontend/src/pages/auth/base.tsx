@@ -19,6 +19,7 @@ import {
   AsyncThunkConfig,
 } from '@reduxjs/toolkit/dist/createAsyncThunk';
 import { LOGIN, SIGNUP } from '../../utils/Constants';
+import authSchema from './authModels';
 
 export default function Base(
   onClick: AsyncThunk<any, User, AsyncThunkConfig>,
@@ -30,8 +31,12 @@ export default function Base(
   const [password, setPassword] = useState('');
 
   const handleClick = async () => {
-    // This is only a basic validation of inputs. Improve this as needed.
-    if (username && password) {
+    const inputData = {
+      username,
+      password,
+    };
+    try {
+      authSchema.parse(inputData);
       try {
         await dispatch(
           onClick({
@@ -42,8 +47,8 @@ export default function Base(
       } catch (e) {
         console.error(e);
       }
-    } else {
-      // Show an error message.
+    } catch (e) {
+      console.error(e);
     }
   };
 

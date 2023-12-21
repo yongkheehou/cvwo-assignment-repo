@@ -13,8 +13,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ForumIcon from '@mui/icons-material/Forum';
+import { LOGIN, SIGNUP } from '../../utils/constants';
 
-const pages = ['Sign Up', 'Login'];
 const settings = ['Profile', 'Logout'];
 
 function NavBar() {
@@ -93,32 +93,46 @@ function NavBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem
-                  key={page}
-                  component="a"
-                  href={page}
-                  onClick={handleCloseNavMenu}
-                >
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem
+                key="login"
+                component="a"
+                href="login"
+                onClick={handleCloseNavMenu}
+              >
+                <Typography textAlign="center">{LOGIN}</Typography>
+              </MenuItem>
+
+              <MenuItem
+                key="signup"
+                component="a"
+                href="signup"
+                onClick={handleCloseNavMenu}
+              >
+                <Typography textAlign="center">{SIGNUP}</Typography>
+              </MenuItem>
             </Menu>
           </Box>
 
           {/* for Desktop view */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                component="a"
-                href={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button
+              key="login"
+              component="a"
+              href="login"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              {LOGIN}
+            </Button>
+            <Button
+              key="signup"
+              component="a"
+              href="signup"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              {SIGNUP}
+            </Button>
           </Box>
 
           <LanguageSelect />

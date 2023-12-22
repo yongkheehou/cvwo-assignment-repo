@@ -21,17 +21,17 @@ export type ErrorWithMessage = {
   message: string;
 };
 
-export enum NotificationType {
+export enum NotifType {
   Success = 'success',
   Error = 'error',
   Warning = 'warning',
   Info = 'info',
 }
 
-export type Notification = {
+export type Notif = {
   open: boolean;
   message: string;
-  type: NotificationType;
+  type: NotifType;
 };
 
-export type ShowNotification = Omit<Notification, 'open'>;
+export type ShowNotif = Omit<Notif, 'open'>;

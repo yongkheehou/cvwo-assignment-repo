@@ -1,27 +1,27 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { NotificationType, ShowNotification } from './AuthModels';
+import { NotifType, ShowNotif } from './AuthModels';
 
 const initialState = {
   open: false,
   message: '',
-  type: NotificationType.Success,
+  type: NotifType.Success,
 };
 
 const NotifSlice = createSlice({
-  name: 'notification',
+  name: 'Notif',
   initialState,
   reducers: {
-    showNotification: (state, action: PayloadAction<ShowNotification>) => {
+    showNotif: (state, action: PayloadAction<ShowNotif>) => {
       state.open = true;
       state.message = action.payload.message;
       state.type = action.payload.type;
     },
-    hideNotification: (state) => {
+    hideNotif: (state) => {
       state.open = false;
       state.message = '';
     },
   },
 });
 
-export const { showNotification, hideNotification } = NotifSlice.actions;
+export const { showNotif, hideNotif } = NotifSlice.actions;
 export default NotifSlice.reducer;

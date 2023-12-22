@@ -1,21 +1,21 @@
 import { Middleware, PayloadAction, isAction } from '@reduxjs/toolkit';
-import { showNotification } from './NotifSlice';
-import { ShowNotification, NotificationType } from './AuthModels';
+import { showNotif } from './NotifSlice';
+import { ShowNotif, NotifType } from './AuthModels';
 
 export const axiosMiddleware: Middleware =
   ({ dispatch }) =>
   (next) =>
   async (action) => {
     if (isAction(action)) {
-      const payloadAction = action as PayloadAction<ShowNotification>;
+      const payloadAction = action as PayloadAction<ShowNotif>;
 
       if (payloadAction.type.endsWith('/rejected')) {
         const errorMessage =
           payloadAction.payload?.message || 'An error occurred!';
 
         dispatch(
-          showNotification({
-            type: NotificationType.Error,
+          showNotif({
+            type: NotifType.Error,
             message: errorMessage,
           }),
         );
@@ -23,8 +23,8 @@ export const axiosMiddleware: Middleware =
         const successMessage = payloadAction.payload?.message || 'Sucess!';
 
         dispatch(
-          showNotification({
-            type: NotificationType.Success,
+          showNotif({
+            type: NotifType.Success,
             message: successMessage,
           }),
         );

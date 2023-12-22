@@ -13,7 +13,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ForumIcon from '@mui/icons-material/Forum';
 import { LOGIN, SIGNUP } from '../../utils/Constants';
-import { useAppSelector } from '../../hooks/ReduxHooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
+import { logout } from '../../features/auth/AuthSlice';
+import { useNavigate } from 'react-router-dom';
 
 const settings = ['Profile', 'Logout'];
 
@@ -41,6 +43,20 @@ export default function NavBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logout()).unwrap();
+      navigate('/login');
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // const handleProfile = async () => {}
 
   return (
     <AppBar position="static">
@@ -75,7 +91,7 @@ export default function NavBar() {
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
-                  onClick={handleOpenNavMenu}
+                  // onClick={handleOpenNavMenu}
                   color="inherit"
                 >
                   <MenuIcon />
@@ -93,7 +109,7 @@ export default function NavBar() {
                     horizontal: 'left',
                   }}
                   open={Boolean(anchorElNav)}
-                  onClose={handleCloseNavMenu}
+                  // onClose={handleCloseNavMenu}
                   sx={{
                     display: { xs: 'block', md: 'none' },
                   }}
@@ -102,7 +118,7 @@ export default function NavBar() {
                     key="login"
                     component="a"
                     href="login"
-                    onClick={handleCloseNavMenu}
+                    // onClick={handleCloseNavMenu}
                   >
                     <Typography textAlign="center">{LOGIN}</Typography>
                   </MenuItem>
@@ -111,7 +127,7 @@ export default function NavBar() {
                     key="signup"
                     component="a"
                     href="signup"
-                    onClick={handleCloseNavMenu}
+                    // onClick={handleCloseNavMenu}
                   >
                     <Typography textAlign="center">{SIGNUP}</Typography>
                   </MenuItem>
@@ -123,7 +139,7 @@ export default function NavBar() {
                   key="login"
                   component="a"
                   href="login"
-                  onClick={handleCloseNavMenu}
+                  // onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   {LOGIN}
@@ -132,7 +148,7 @@ export default function NavBar() {
                   key="signup"
                   component="a"
                   href="signup"
-                  onClick={handleCloseNavMenu}
+                  // onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   {SIGNUP}
@@ -165,11 +181,13 @@ export default function NavBar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem key="profile" onClick={handleLogout}>
+                  <Typography textAlign="center">Profile</Typography>
+                </MenuItem>
+
+                <MenuItem key="logout" onClick={handleLogout}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           )}

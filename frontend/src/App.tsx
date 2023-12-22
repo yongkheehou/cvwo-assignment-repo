@@ -8,10 +8,12 @@ import Signup from './pages/auth/Signup';
 import Layout from './layouts/Layout';
 import ProtectedLayout from './layouts/ProtectedLayout';
 import NotifBar from './components/auth/NotifBar';
+import NavBar from './components/navBar/NavBar';
 
 function App() {
   return (
     <>
+      <NavBar />
       <NotifBar />
       <Routes>
         <Route element={<Layout />}>

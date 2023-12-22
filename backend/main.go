@@ -16,7 +16,7 @@ func main() {
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://0.0.0.0"},
+		AllowOrigins:     []string{"http://0.0.0.0", "http://localhost:3000"},
 		AllowHeaders:     []string{"Content-Type,access-control-allow-origin, access-control-allow-headers"},
 		AllowCredentials: true,
 	}))

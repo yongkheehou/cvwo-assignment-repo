@@ -7,6 +7,7 @@ import {
 import AxiosInstance from '../../api/AxiosInstance';
 import { AxiosError } from 'axios';
 import { User, AuthApiState, ErrorWithMessage } from './AuthModels';
+import useAuth from './useAuth';
 
 const initialState: AuthApiState = {
   basicUserInfo: localStorage.getItem('userInfo')
@@ -17,49 +18,9 @@ const initialState: AuthApiState = {
   error: null,
 };
 
-export const login = createAsyncThunk(
-  'login',
-  async (data: User, { rejectWithValue }) => {
-    try {
-      const response = await AxiosInstance.post('/login', data);
-      const resData = response.data;
+export const login = useAuth('login', '/login');
 
-      localStorage.setItem('userInfo', JSON.stringify(resData));
-
-      return resData;
-    } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        const errorResponse = error.response.data;
-
-        return rejectWithValue(errorResponse);
-      }
-
-      throw error;
-    }
-  },
-);
-
-export const signup = createAsyncThunk(
-  'signup',
-  async (data: User, { rejectWithValue }) => {
-    try {
-      const response = await AxiosInstance.post('/signup', data);
-      const resData = response.data;
-
-      localStorage.setItem('userInfo', JSON.stringify(resData));
-
-      return resData;
-    } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        const errorResponse = error.response.data;
-
-        return rejectWithValue(errorResponse);
-      }
-
-      throw error;
-    }
-  },
-);
+export const signup = useAuth('signup', '/signup');
 
 export const logout = createAsyncThunk(
   'logout',

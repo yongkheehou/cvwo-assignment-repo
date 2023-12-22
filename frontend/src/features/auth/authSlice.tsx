@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  isAnyOf,
+} from '@reduxjs/toolkit';
 import AxiosInstance from '../../api/AxiosInstance';
 import { AxiosError } from 'axios';
 import { User, AuthApiState, ErrorWithMessage } from './AuthModels';
@@ -102,83 +107,44 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // login
-      .addCase(login.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
-      })
-      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
-        state.status = 'idle';
-        state.basicUserInfo = action.payload;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.status = 'failed';
-        if (action.payload) {
-          state.error =
-            (action.payload as ErrorWithMessage).message || 'Login failed';
-        } else {
-          state.error = action.error.message || 'Login failed';
-        }
-      })
-
-      // signup
-      .addCase(signup.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
-      })
-      .addCase(signup.fulfilled, (state, action: PayloadAction<User>) => {
-        state.status = 'idle';
-        state.basicUserInfo = action.payload;
-      })
-      .addCase(signup.rejected, (state, action) => {
-        state.status = 'failed';
-        if (action.payload) {
-          state.error =
-            (action.payload as ErrorWithMessage).message ||
-            'Registration failed';
-        } else {
-          state.error = action.error.message || 'Registration failed';
-        }
-      })
-
-      // logout
-      .addCase(logout.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
-      })
-      .addCase(logout.fulfilled, (state, action) => {
-        state.status = 'idle';
-        state.basicUserInfo = null;
-      })
-      .addCase(logout.rejected, (state, action) => {
-        state.status = 'failed';
-        if (action.payload) {
-          state.error =
-            (action.payload as ErrorWithMessage).message || 'Logout failed';
-        } else {
-          state.error = action.error.message || 'Logout failed';
-        }
-      })
-
-      // getUser
-      .addCase(getUser.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
-      })
-      .addCase(getUser.fulfilled, (state, action) => {
-        state.status = 'idle';
-        state.userCompleteData = action.payload;
-      })
-      .addCase(getUser.rejected, (state, action) => {
-        state.status = 'failed';
-        if (action.payload) {
-          state.error =
-            (action.payload as ErrorWithMessage).message ||
-            'Get user profile data failed';
-        } else {
-          state.error = action.error.message || 'Get user profile data failed';
-        }
-      });
+      .addMatcher(
+        isAnyOf(login.pending, signup.pending, logout.pending, getUser.pending),
+        (state) => {
+          state.status = 'loading';
+          state.error = null;
+        },
+      )
+      .addMatcher(
+        isAnyOf(
+          login.fulfilled,
+          signup.fulfilled,
+          logout.fulfilled,
+          getUser.fulfilled,
+        ),
+        (state, action: PayloadAction<User>) => {
+          state.status = 'idle';
+          state.basicUserInfo = action.payload;
+          console.log(action);
+        },
+      )
+      .addMatcher(
+        isAnyOf(
+          login.rejected,
+          signup.rejected,
+          logout.rejected,
+          getUser.rejected,
+        ),
+        (state, action) => {
+          state.status = 'failed';
+          if (action.payload) {
+            state.error =
+              (action.payload as ErrorWithMessage).message ||
+              'Could not complete action';
+          } else {
+            state.error = action.error.message || 'Could not complete action';
+          }
+        },
+      );
   },
 });
 

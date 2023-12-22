@@ -7,7 +7,7 @@ import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import Layout from './layouts/Layout';
 import ProtectedLayout from './layouts/ProtectedLayout';
-import NotifBar from './components/auth/notifBar';
+import NotifBar from './components/auth/NotifBar';
 
 function App() {
   return (

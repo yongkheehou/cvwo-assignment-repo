@@ -52,9 +52,10 @@ export default function Base(
     } catch (e) {
       dispatch(
         showNotif({
+          open: true,
           message:
             'Check your email and password meet the complexity requirements',
-          type: NotifType.Error,
+          notifType: NotifType.Error,
         }),
       );
     }

@@ -31,7 +31,5 @@ export enum NotifType {
 export type Notif = {
   open: boolean;
   message: string;
-  type: NotifType;
+  notifType: NotifType;
 };
-
-export type ShowNotif = Omit<Notif, 'open'>;

@@ -13,7 +13,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
 const NotifBar = () => {
   const dispatch = useAppDispatch();
-  const { open, message, type } = useAppSelector((state) => state.notif);
+  const { open, message, notifType } = useAppSelector((state) => state.notif);
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -34,7 +34,11 @@ const NotifBar = () => {
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleClose}
+          severity={notifType}
+          sx={{ width: '100%' }}
+        >
           {message}
         </Alert>
       </Snackbar>

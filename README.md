@@ -28,5 +28,6 @@ alternative deployment
 
 extensions to project
 - migrate docker postgres db to aws aurora managed postgres instance
+- setting up jest tests and running pre-commit hook for linting and unit, integration tests
 
 link to report + reflection on project

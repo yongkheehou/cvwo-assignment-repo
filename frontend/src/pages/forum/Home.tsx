@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../hooks/ReduxHooks';
-import { getUser, logout } from '../features/auth/AuthSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
+import { getUser, logout } from '../../features/auth/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {

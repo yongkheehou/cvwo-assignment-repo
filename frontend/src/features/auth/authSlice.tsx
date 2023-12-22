@@ -104,6 +104,7 @@ const authSlice = createSlice({
           } else {
             state.error = action.error.message || 'Could not complete action';
           }
+          console.log(action);
         },
       );
   },

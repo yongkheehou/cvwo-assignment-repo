@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/ReduxHooks';
 import React from 'react';
-import { User } from '../../features/auth/AuthModels';
+import { AuthApiState, User } from '../../features/auth/AuthModels';
 import {
   AsyncThunk,
   AsyncThunkConfig,
@@ -23,10 +23,10 @@ import authSchema from './AuthModels';
 import { showNotif } from '../../features/auth/NotifSlice';
 import { NotifType } from '../../features/auth/AuthModels';
 
-export default function Base(
+const Base = (
   onClick: AsyncThunk<any, User, AsyncThunkConfig>,
   action: string,
-) {
+) => {
   const dispatch = useAppDispatch();
 
   const [username, setUsername] = useState('');
@@ -47,7 +47,14 @@ export default function Base(
           }),
         ).unwrap();
       } catch (e) {
-        console.error(e);
+        console.log(e);
+        dispatch(
+          showNotif({
+            open: true,
+            message: (e as AuthApiState).error || 'unknown error',
+            notifType: NotifType.Error,
+          }),
+        );
       }
     } catch (e) {
       dispatch(
@@ -126,4 +133,6 @@ export default function Base(
       </Container>
     </>
   );
-}
+};
+
+export default Base;

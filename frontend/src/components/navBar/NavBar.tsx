@@ -63,7 +63,7 @@ export default function NavBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <ForumIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+            <ForumIcon sx={{ mr: 1 }} />
             <Typography
               variant="h6"
               noWrap

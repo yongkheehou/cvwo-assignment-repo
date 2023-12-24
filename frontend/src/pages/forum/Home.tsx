@@ -20,12 +20,7 @@ const Home = () => {
   // }, [basicUserInfo]);
 
   const handleLogout = async () => {
-    try {
-      await dispatch(logout()).unwrap();
-      navigate('/login');
-    } catch (e) {
-      console.error(e);
-    }
+    console.log(userProfileInfo);
   };
 
   return (

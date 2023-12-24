@@ -4,7 +4,7 @@ export type User = {
 };
 
 export type UserCompleteData = {
-  id: string;
+  ID: number;
   name: string;
   username: string;
   profilePicture: string;

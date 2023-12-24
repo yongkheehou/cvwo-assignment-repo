@@ -13,7 +13,9 @@ const initialState: AuthApiState = {
   basicUserInfo: localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo') as string)
     : null,
-  userCompleteData: undefined,
+  userCompleteData: localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo') as string)
+    : null,
   status: 'idle',
   error: null,
 };

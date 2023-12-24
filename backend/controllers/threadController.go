@@ -7,10 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yongkheehou/cvwo-assignment-repo/backend/initializers"
 	"github.com/yongkheehou/cvwo-assignment-repo/backend/models"
-	"golang.org/x/crypto/bcrypt"
 )
 
-func GetAllThread(c *gin.Context) {
+func GetAllThreads(c *gin.Context) {
 	threads := []models.Thread{}
 	initializers.DB.Model(&models.Thread{}).Find(&threads)
 	c.JSON(200, &threads)
@@ -29,7 +28,7 @@ func GetSingleThread(c *gin.Context) {
 
 	var thread models.Thread
 
-	e := initializers.DB.Model(&models.Thread{}).Where("ID=?", id).Find(&id).Error
+	e := initializers.DB.Model(&models.Thread{}).Where("ID=?", id).Find(&thread).Error
 
 	if e != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -45,8 +44,7 @@ func GetSingleThread(c *gin.Context) {
 }
 
 func CreateThread(c *gin.Context) {
-	// get email/pass
-	var payload models.User
+	var payload models.Thread
 	if c.BindJSON(&payload) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to read payload",
@@ -55,45 +53,38 @@ func CreateThread(c *gin.Context) {
 		return
 	}
 
-	// hash the password
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(payload.Password), 10)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to hash password",
-		})
-
-		return
+	// create the thread
+	thread := models.Thread{
+		Title:    payload.Title,
+		Content:  payload.Content,
+		Tags:     payload.Tags,
+		Likes:    payload.Likes,
+		Comments: nil,
 	}
 
-	// create the user
-	user := models.User{
-		Username:   payload.Username,
-		Password:   string(hashedPassword),
-		ProfilePic: payload.ProfilePic,
-	}
-	result := initializers.DB.Model(&models.User{}).Create(&user)
+	result := initializers.DB.Model(&models.Thread{}).Create(&thread)
 
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Username already exists",
+			"error": "Thread already exists",
 		})
 
 		return
 	}
 
 	// respond
-	c.JSON(200, &user)
+	c.JSON(200, &thread)
 }
 
 func DeleteThread(c *gin.Context) {
-	var thread models.User
+	var thread models.Thread
 	initializers.DB.Model(&models.Thread{}).Where("id = ?", c.Param("id")).Delete(&thread)
 	c.JSON(200, &thread)
 }
 
 func UpdateThread(c *gin.Context) {
-	var thread models.User
-	initializers.DB.Model(&models.Thread{}).Where("id = ?", c.Param("id")).First(&thread) // getting user
+	var thread models.Thread
+	initializers.DB.Model(&models.Thread{}).Where("id = ?", c.Param("id")).First(&thread) // getting thread
 	c.BindJSON(&thread)
 	initializers.DB.Save(&thread)
 	c.JSON(200, &thread)

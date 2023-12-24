@@ -17,10 +17,6 @@ export type AuthApiState = {
   error: string | null;
 };
 
-export type ErrorWithMessage = {
-  message: string;
-};
-
 export enum NotifType {
   Success = 'success',
   Error = 'error',

@@ -6,12 +6,8 @@ import {
 } from '@reduxjs/toolkit';
 import AxiosInstance from '../../api/AxiosInstance';
 import { AxiosError } from 'axios';
-import {
-  User,
-  AuthApiState,
-  ErrorWithMessage,
-  UserCompleteData,
-} from './AuthModels';
+import { User, AuthApiState, UserCompleteData } from './AuthModels';
+import { ErrorWithMessage } from '../sharedTypes';
 import useAuth from './useAuth';
 
 const initialState: AuthApiState = {

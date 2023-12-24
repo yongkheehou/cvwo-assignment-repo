@@ -70,7 +70,7 @@ func Auth(c *gin.Context) {
 
 		// Find user
 		var user models.User
-		initializers.UserDB.First(&user, claims["sub"])
+		initializers.DB.First(&user, claims["sub"])
 
 		if user.ID == 0 {
 			c.JSON(http.StatusUnauthorized, gin.H{

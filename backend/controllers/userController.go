@@ -14,10 +14,38 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func GetUsers(c *gin.Context) {
+func GetAllUsers(c *gin.Context) {
 	users := []models.User{}
-	initializers.UserDB.Find(&users)
+	initializers.DB.Model(&models.User{}).Find(&users)
 	c.JSON(200, &users)
+}
+
+func GetSingleUser(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32) // base 10, 32 bits
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid User ID",
+		})
+
+		return
+	}
+
+	var user models.User
+
+	e := initializers.DB.Model(&models.User{}).Where("ID=?", id).Find(&user).Error
+
+	if e != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "No such User ID",
+		})
+
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"user": user,
+	})
 }
 
 func SignUp(c *gin.Context) {
@@ -47,7 +75,7 @@ func SignUp(c *gin.Context) {
 		Password:   string(hashedPassword),
 		ProfilePic: payload.ProfilePic,
 	}
-	result := initializers.UserDB.Create(&user)
+	result := initializers.DB.Model(&models.User{}).Create(&user)
 
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -74,7 +102,7 @@ func Login(c *gin.Context) {
 
 	// fetch user
 	var user models.User
-	initializers.UserDB.First(&user, "username = ?", payload.Username)
+	initializers.DB.Model(&models.User{}).First(&user, "username = ?", payload.Username)
 
 	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -123,7 +151,7 @@ func Login(c *gin.Context) {
 	c.SetCookie("Auth", tokenString, time, "", "", true, true)
 
 	c.JSON(200, gin.H{
-		"token": tokenString,
+		"login token": tokenString,
 	})
 }
 
@@ -188,7 +216,7 @@ func RefreshToken(c *gin.Context) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
 		// Find user
 		var user models.User
-		initializers.UserDB.First(&user, claims["sub"])
+		initializers.DB.Model(&models.User{}).First(&user, claims["sub"])
 
 		if user.ID == 0 {
 			c.JSON(http.StatusUnauthorized, gin.H{
@@ -226,7 +254,7 @@ func RefreshToken(c *gin.Context) {
 		c.SetCookie("Refresh", tokenString, time, "", "", true, true)
 
 		c.JSON(200, gin.H{
-			"token": tokenString,
+			"refresh token": tokenString,
 		})
 
 	} else {
@@ -240,14 +268,14 @@ func RefreshToken(c *gin.Context) {
 
 func DeleteUser(c *gin.Context) {
 	var user models.User
-	initializers.UserDB.Where("id = ?", c.Param("id")).Delete(&user)
+	initializers.DB.Model(&models.User{}).Where("id = ?", c.Param("id")).Delete(&user)
 	c.JSON(200, &user)
 }
 
 func UpdateUser(c *gin.Context) {
 	var user models.User
-	initializers.UserDB.Where("id = ?", c.Param("id")).First(&user) // getting user
+	initializers.DB.Model(&models.User{}).Where("id = ?", c.Param("id")).First(&user) // getting user
 	c.BindJSON(&user)
-	initializers.UserDB.Save(&user)
+	initializers.DB.Save(&user)
 	c.JSON(200, &user)
 }

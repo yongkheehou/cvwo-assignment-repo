@@ -24,6 +24,7 @@ func main() {
 
 	routes.UserRoute(r)
 	routes.ThreadRoute(r)
+	routes.CommentRoute(r)
 
 	r.Run(":4000") // listen and serve on 0.0.0.0:4000
 }

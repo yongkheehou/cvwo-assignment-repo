@@ -121,7 +121,7 @@ export const deleteThread = createAsyncThunk(
 );
 
 const threadSlice = createSlice({
-  name: 'auth',
+  name: 'thread',
   initialState,
   reducers: {},
   extraReducers: (builder) => {

@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/auth/AuthSlice';
 import userReducer from './features/user/UserSlice';
 import notifReducer from './features/auth/NotifSlice';
+import threadReducer from './features/forum/ThreadSlice';
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     user: userReducer,
     notif: notifReducer,
+    thread: threadReducer,
   },
 });
 

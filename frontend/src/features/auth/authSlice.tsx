@@ -6,7 +6,12 @@ import {
 } from '@reduxjs/toolkit';
 import AxiosInstance from '../../api/AxiosInstance';
 import { AxiosError } from 'axios';
-import { User, AuthApiState, ErrorWithMessage } from './AuthModels';
+import {
+  User,
+  AuthApiState,
+  ErrorWithMessage,
+  UserCompleteData,
+} from './AuthModels';
 import useAuth from './useAuth';
 
 const initialState: AuthApiState = {
@@ -64,6 +69,43 @@ export const getUser = createAsyncThunk(
   },
 );
 
+// updateUser and deleteUser not implemented with buttons to send the axios request to backend yet
+export const updateUser = createAsyncThunk(
+  'users/update',
+  async (data: UserCompleteData, { rejectWithValue }) => {
+    try {
+      const response = await AxiosInstance.put(`/users/${data.ID}`, data);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorResponse = error.response.data;
+
+        return rejectWithValue(errorResponse);
+      }
+
+      throw error;
+    }
+  },
+);
+
+export const deleteUser = createAsyncThunk(
+  'users/delete',
+  async (data: UserCompleteData, { rejectWithValue }) => {
+    try {
+      const response = await AxiosInstance.delete(`/users/${data.ID}`);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorResponse = error.response.data;
+
+        return rejectWithValue(errorResponse);
+      }
+
+      throw error;
+    }
+  },
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -71,7 +113,14 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(
-        isAnyOf(login.pending, signup.pending, logout.pending, getUser.pending),
+        isAnyOf(
+          login.pending,
+          signup.pending,
+          logout.pending,
+          getUser.pending,
+          updateUser.pending,
+          deleteUser.pending,
+        ),
         (state) => {
           state.status = 'loading';
           state.error = null;
@@ -83,6 +132,8 @@ const authSlice = createSlice({
           signup.fulfilled,
           logout.fulfilled,
           getUser.fulfilled,
+          updateUser.fulfilled,
+          deleteUser.fulfilled,
         ),
         (state, action: PayloadAction<User>) => {
           state.status = 'idle';
@@ -96,6 +147,8 @@ const authSlice = createSlice({
           signup.rejected,
           logout.rejected,
           getUser.rejected,
+          updateUser.rejected,
+          deleteUser.rejected,
         ),
         (state, action) => {
           state.status = 'failed';

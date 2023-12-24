@@ -59,6 +59,7 @@ func CreateThread(c *gin.Context) {
 		Content:  payload.Content,
 		Tags:     payload.Tags,
 		Likes:    payload.Likes,
+		UserID:   payload.UserID,
 		Comments: nil,
 	}
 

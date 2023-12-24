@@ -8,5 +8,6 @@ type Thread struct {
 	Content    string
 	Tags       string
 	Likes      uint
+	UserID     uint // ID of the user who posted this thread
 	Comments   []Comment
 }

@@ -149,7 +149,7 @@ const threadSlice = createSlice({
         ),
         (state, action: PayloadAction<Thread[]>) => {
           state.Status = 'idle';
-          state.ThreadArr = action.payload;
+          state.ThreadArr = action.payload.sort((a, b) => b.ID - a.ID);
           console.log(action);
         },
       )

@@ -20,6 +20,7 @@ func main() {
 		AllowOrigins:     []string{"http://0.0.0.0", "http://localhost:3000"},
 		AllowHeaders:     []string{"Content-Type,access-control-allow-origin, access-control-allow-headers"},
 		AllowCredentials: true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
 	}))
 
 	routes.UserRoute(r)

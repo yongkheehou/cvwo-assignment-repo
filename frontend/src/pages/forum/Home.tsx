@@ -1,36 +1,17 @@
-import React, { useEffect } from 'react';
-import { Button } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
-import { getUser, logout } from '../../features/auth/AuthSlice';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Box, Stack, Button } from '@mui/material';
+import { ForumDisplay } from './ForumDisplay';
 
 const Home = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  // const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
-  const userProfileInfo = useAppSelector(
-    (state) => state.auth.userCompleteData,
-  );
-
-  // useEffect(() => {
-  //   if (basicUserInfo) {
-  //     dispatch(getUser(basicUserInfo.id));
-  //   }
-  // }, [basicUserInfo]);
-
-  const handleLogout = async () => {
-    console.log(userProfileInfo);
-  };
-
   return (
-    <>
-      <h1>Home</h1>
-      <h4>Username: {userProfileInfo?.username}</h4>
-      <Button variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleLogout}>
-        Logout
-      </Button>
-    </>
+    <Stack sx={{ display: 'flex', alignItems: 'center' }}>
+      <h1>Threads</h1>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box>Sort Threads</Box>
+        <Button>Create New Thread</Button>
+      </Box>
+      <ForumDisplay />
+    </Stack>
   );
 };
 

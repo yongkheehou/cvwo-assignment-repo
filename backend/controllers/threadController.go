@@ -86,7 +86,16 @@ func DeleteThread(c *gin.Context) {
 func UpdateThread(c *gin.Context) {
 	var thread models.Thread
 	initializers.DB.Model(&models.Thread{}).Where("id = ?", c.Param("id")).First(&thread) // getting thread
-	c.BindJSON(&thread)
+
+	if c.BindJSON(&thread) != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to read payload",
+		})
+
+		return
+	}
+
 	initializers.DB.Save(&thread)
+
 	c.JSON(200, &thread)
 }

@@ -10,36 +10,15 @@ import { Thread, ThreadApiState } from './ForumModels';
 import { ErrorWithMessage } from '../sharedTypes';
 
 const initialState: ThreadApiState = {
-  thread: {
-    ID: null,
-    title: null,
-    content: null,
-    tags: null,
-    likes: null,
-    userID: null,
-    comments: null,
-  },
-  status: 'idle',
-  error: null,
+  ThreadArr: [],
+  Status: 'idle',
+  Error: null,
 };
 
-export const getAllThreads = createAsyncThunk(
-  'threads',
-  async (userId: string, { rejectWithValue }) => {
-    try {
-      const response = await AxiosInstance.get(`/users/${userId}`);
-      return response.data;
-    } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        const errorResponse = error.response.data;
-
-        return rejectWithValue(errorResponse);
-      }
-
-      throw error;
-    }
-  },
-);
+export const getAllThreads = createAsyncThunk('threads', async () => {
+  const response = await AxiosInstance.get(`/getthreads`);
+  return response.data;
+});
 
 // TODO: implement filtering/ sorting of threads by tag
 export const getFilteredThreads = createAsyncThunk(
@@ -88,7 +67,28 @@ export const updateThread = createAsyncThunk(
   'threads/update',
   async (data: Thread, { rejectWithValue }) => {
     try {
-      const response = await AxiosInstance.put(`/threads/${data.ID}`, data);
+      const response = await AxiosInstance.put(`/thread/${data.ID}`, data);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorResponse = error.response.data;
+
+        return rejectWithValue(errorResponse);
+      }
+
+      throw error;
+    }
+  },
+);
+
+export const likeThread = createAsyncThunk(
+  'threads/like',
+  async (data: Thread, { rejectWithValue }) => {
+    try {
+      const response = await AxiosInstance.put(`/thread/${data.ID}`, {
+        ...data,
+        Likes: data.Likes + 1,
+      });
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -106,7 +106,7 @@ export const deleteThread = createAsyncThunk(
   'threads/delete',
   async (data: Thread, { rejectWithValue }) => {
     try {
-      const response = await AxiosInstance.delete(`/threads/${data.ID}`);
+      const response = await AxiosInstance.delete(`/thread/${data.ID}`);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -135,8 +135,8 @@ const threadSlice = createSlice({
           deleteThread.pending,
         ),
         (state) => {
-          state.status = 'loading';
-          state.error = null;
+          state.Status = 'loading';
+          state.Error = null;
         },
       )
       .addMatcher(
@@ -147,9 +147,9 @@ const threadSlice = createSlice({
           updateThread.fulfilled,
           deleteThread.fulfilled,
         ),
-        (state, action: PayloadAction<Thread>) => {
-          state.status = 'idle';
-          state.thread = action.payload;
+        (state, action: PayloadAction<Thread[]>) => {
+          state.Status = 'idle';
+          state.ThreadArr = action.payload;
           console.log(action);
         },
       )
@@ -162,13 +162,13 @@ const threadSlice = createSlice({
           deleteThread.rejected,
         ),
         (state, action) => {
-          state.status = 'failed';
+          state.Status = 'failed';
           if (action.payload) {
-            state.error =
+            state.Error =
               (action.payload as ErrorWithMessage).message ||
               'Could not complete action';
           } else {
-            state.error = action.error.message || 'Could not complete action';
+            state.Error = action.error.message || 'Could not complete action';
           }
           console.log(action);
         },

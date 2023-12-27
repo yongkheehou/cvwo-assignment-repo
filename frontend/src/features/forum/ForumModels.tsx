@@ -1,22 +1,25 @@
 export type Comment = {
-  ID: number | null;
-  content: string | null;
-  threadID: number | null;
-  userID: number | null;
+  ID: number;
+  Content: string;
+  ThreadID: number;
+  UserID: number;
 };
 
 export type Thread = {
-  ID: number | null;
-  title: string | null;
-  content: string | null;
-  tags: string | null;
-  likes: number | null;
-  userID: number | null;
-  comments: Comment[] | null;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string;
+  ID: number;
+  Title: string;
+  Content: string;
+  Tags: string;
+  Likes: number;
+  UserID: number;
+  Comments: Comment[] | null;
 };
 
 export type ThreadApiState = {
-  thread: Thread;
-  status: 'idle' | 'loading' | 'failed';
-  error: string | null;
+  ThreadArr?: Thread[] | null;
+  Status: 'idle' | 'loading' | 'failed';
+  Error: string | null;
 };

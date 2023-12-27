@@ -79,20 +79,13 @@ export const ForumDisplay = () => {
     return (
       <>
         {threadInfo.map((thread) => {
-          // const {
-          //   ID,
-          //   Title,
-          //   Content,
-          //   Tags,
-          //   Likes,
-          //   UserID,
-          //   Comments,
-          // } = thread as Thread;
-          // return <Button key={thread.ID}>{thread.ID}</Button>;
           return (
             <Card
               key={thread.ID}
-              sx={{ width: 'auto', minWidth: 400, marginBottom: 4 }}
+              sx={{
+                width: 'auto',
+                marginBottom: 4,
+              }}
             >
               <CardHeader
                 avatar={
@@ -118,9 +111,6 @@ export const ForumDisplay = () => {
                   <ThumbUpIcon />
                 </IconButton>
                 <Typography>{thread.Likes}</Typography>
-                {/* <IconButton aria-label="share">
-                  <ShareIcon />
-                </IconButton> */}
                 <ExpandMore
                   expand={expanded}
                   onClick={handleExpandClick}
@@ -141,6 +131,6 @@ export const ForumDisplay = () => {
       </>
     );
   } else {
-    return <Button>No threads!</Button>;
+    return <h1>No Threads Yet!</h1>;
   }
 };

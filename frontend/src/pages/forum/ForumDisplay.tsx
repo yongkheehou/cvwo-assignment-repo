@@ -9,17 +9,23 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
 import { useEffect, useState } from 'react';
 import { getAllThreads, likeThread } from '../../features/forum/ThreadSlice';
 import React from 'react';
-import { Button } from '@mui/material';
 import { showNotif } from '../../features/auth/NotifSlice';
-import { Thread, ThreadApiState } from '../../features/forum/ForumModels';
+import { Thread } from '../../features/forum/ForumModels';
 import { NotifType } from '../../features/auth/AuthModels';
 import { ErrorWithMessage } from '../../features/sharedTypes';
+import {
+  DATE,
+  DECREASING,
+  INCREASING,
+  LIKES,
+  TITLE,
+} from '../../utils/Constants';
+import { Dispatch, SetStateAction } from 'react';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -36,7 +42,66 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export const ForumDisplay = () => {
+interface Props {
+  criteria: string;
+  direction: string;
+  threadInfo: Thread[] | null | undefined;
+  setThreadUpdated: Dispatch<SetStateAction<boolean>>;
+}
+
+const sortThreads = (
+  criteria: string,
+  direction: string,
+  sortedThreads: Thread[] | null | undefined,
+  setSortedThreads: Dispatch<SetStateAction<Thread[] | null | undefined>>,
+) => {
+  if (criteria == TITLE) {
+    if (direction == INCREASING) {
+      setSortedThreads(
+        [...(sortedThreads as Thread[])].sort((a, b) =>
+          a.Title.localeCompare(b.Title),
+        ),
+      );
+    } else if (direction == DECREASING) {
+      setSortedThreads(
+        [...(sortedThreads as Thread[])].sort((a, b) =>
+          b.Title.localeCompare(a.Title),
+        ),
+      );
+    }
+  } else if (criteria == DATE) {
+    if (direction == INCREASING) {
+      setSortedThreads(
+        [...(sortedThreads as Thread[])].sort(
+          (a, b) => Date.parse(a.CreatedAt) - Date.parse(b.CreatedAt),
+        ),
+      );
+    } else if (direction == DECREASING) {
+      setSortedThreads(
+        [...(sortedThreads as Thread[])].sort(
+          (a, b) => Date.parse(b.CreatedAt) - Date.parse(a.CreatedAt),
+        ),
+      );
+    }
+  } else if (criteria == LIKES) {
+    if (direction == INCREASING) {
+      setSortedThreads(
+        [...(sortedThreads as Thread[])].sort((a, b) => a.Likes - b.Likes),
+      );
+    } else if (direction == DECREASING) {
+      setSortedThreads(
+        [...(sortedThreads as Thread[])].sort((a, b) => b.Likes - a.Likes),
+      );
+    }
+  }
+};
+
+export const ForumDisplay = ({
+  criteria,
+  direction,
+  threadInfo,
+  setThreadUpdated,
+}: Props) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -45,19 +110,10 @@ export const ForumDisplay = () => {
 
   const dispatch = useAppDispatch();
 
-  const [threadUpdated, setThreadUpdated] = useState(false);
-
   useEffect(() => {
-    async function getThreads() {
-      await dispatch(getAllThreads()).unwrap();
-    }
-
-    getThreads();
-
-    setThreadUpdated(false);
-  }, [threadUpdated]);
-
-  const threadInfo = useAppSelector((state) => state.thread.ThreadArr);
+    console.log('thread info' + threadInfo);
+    // sortThreads(criteria, direction, threadInfo, setThreadInfo);
+  }, [criteria, direction]);
 
   const handleLike = async (thread: Thread) => {
     try {

@@ -1,8 +1,8 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
+import React from 'react';
+import { useConfirm } from '../../hooks/userConfirmation';
 import CreateIcon from '@mui/icons-material/Create';
 
 const style = {
@@ -14,13 +14,27 @@ const style = {
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  pt: 2,
+  px: 4,
+  pb: 3,
 };
 
 export default function CreatePostModal() {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const { ask } = useConfirm();
+
+  const handleAction = async () => {
+    if (await ask('Stop Creating New Thread?')) {
+      handleClose();
+    }
+  };
 
   return (
     <div>
@@ -29,17 +43,15 @@ export default function CreatePostModal() {
       </Button>
       <Modal
         open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        onClose={handleAction}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        <Box sx={{ ...style, width: 400 }}>
+          <h2 id="parent-modal-title">Text in a modal</h2>
+          <p id="parent-modal-description">
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          </p>
         </Box>
       </Modal>
     </div>

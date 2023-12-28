@@ -2,13 +2,11 @@ import React from 'react';
 import { Box, Stack, Button } from '@mui/material';
 import { ForumDisplay } from './ForumDisplay';
 import SortButton from '../../components/forum/SortButton';
-import CreateIcon from '@mui/icons-material/Create';
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
 import { getAllThreads } from '../../features/forum/ThreadSlice';
 import { INCREASING, TITLE } from '../../utils/Constants';
-import { Thread } from '../../features/forum/ForumModels';
-import { sortThreadsTwo } from './Helpers';
+import CreatePostModal from '../../components/forum/CreatePostModal';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -50,9 +48,7 @@ const Home = () => {
             direction={direction}
             setDirection={setDirection}
           />
-          <Button variant="contained" endIcon={<CreateIcon />}>
-            New Thread
-          </Button>
+          <CreatePostModal />
         </Box>
         <Box sx={{ alignItems: 'center' }}>
           <ForumDisplay

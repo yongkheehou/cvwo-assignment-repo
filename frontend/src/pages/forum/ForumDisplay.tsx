@@ -11,21 +11,15 @@ import { red } from '@mui/material/colors';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getAllThreads, likeThread } from '../../features/forum/ThreadSlice';
 import React from 'react';
 import { showNotif } from '../../features/auth/NotifSlice';
 import { Thread } from '../../features/forum/ForumModels';
 import { NotifType } from '../../features/auth/AuthModels';
 import { ErrorWithMessage } from '../../features/sharedTypes';
-import {
-  DATE,
-  DECREASING,
-  INCREASING,
-  LIKES,
-  TITLE,
-} from '../../utils/Constants';
 import { Dispatch, SetStateAction } from 'react';
+import { sortThreadsTwo } from './Helpers';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -49,53 +43,6 @@ interface Props {
   setThreadUpdated: Dispatch<SetStateAction<boolean>>;
 }
 
-const sortThreads = (
-  criteria: string,
-  direction: string,
-  sortedThreads: Thread[] | null | undefined,
-  setSortedThreads: Dispatch<SetStateAction<Thread[] | null | undefined>>,
-) => {
-  if (criteria == TITLE) {
-    if (direction == INCREASING) {
-      setSortedThreads(
-        [...(sortedThreads as Thread[])].sort((a, b) =>
-          a.Title.localeCompare(b.Title),
-        ),
-      );
-    } else if (direction == DECREASING) {
-      setSortedThreads(
-        [...(sortedThreads as Thread[])].sort((a, b) =>
-          b.Title.localeCompare(a.Title),
-        ),
-      );
-    }
-  } else if (criteria == DATE) {
-    if (direction == INCREASING) {
-      setSortedThreads(
-        [...(sortedThreads as Thread[])].sort(
-          (a, b) => Date.parse(a.CreatedAt) - Date.parse(b.CreatedAt),
-        ),
-      );
-    } else if (direction == DECREASING) {
-      setSortedThreads(
-        [...(sortedThreads as Thread[])].sort(
-          (a, b) => Date.parse(b.CreatedAt) - Date.parse(a.CreatedAt),
-        ),
-      );
-    }
-  } else if (criteria == LIKES) {
-    if (direction == INCREASING) {
-      setSortedThreads(
-        [...(sortedThreads as Thread[])].sort((a, b) => a.Likes - b.Likes),
-      );
-    } else if (direction == DECREASING) {
-      setSortedThreads(
-        [...(sortedThreads as Thread[])].sort((a, b) => b.Likes - a.Likes),
-      );
-    }
-  }
-};
-
 export const ForumDisplay = ({
   criteria,
   direction,
@@ -110,10 +57,11 @@ export const ForumDisplay = ({
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    console.log('thread info' + threadInfo);
-    // sortThreads(criteria, direction, threadInfo, setThreadInfo);
-  }, [criteria, direction]);
+  const sortedThreads = useMemo(() => {
+    console.log('useMemo running');
+    const clonedThreads = [...(threadInfo as Thread[])];
+    return sortThreadsTwo(criteria, direction, clonedThreads);
+  }, [criteria, direction, threadInfo]);
 
   const handleLike = async (thread: Thread) => {
     try {
@@ -131,10 +79,10 @@ export const ForumDisplay = ({
     }
   };
 
-  if (Array.isArray(threadInfo)) {
+  if (Array.isArray(sortedThreads)) {
     return (
       <>
-        {threadInfo.map((thread) => {
+        {sortedThreads.map((thread) => {
           return (
             <Card
               key={thread.ID}

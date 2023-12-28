@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
 import { getAllThreads } from '../../features/forum/ThreadSlice';
 import { INCREASING, TITLE } from '../../utils/Constants';
 import { Thread } from '../../features/forum/ForumModels';
+import { sortThreadsTwo } from './Helpers';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -21,9 +22,13 @@ const Home = () => {
   }
 
   useEffect(() => {
+    console.log('rerendered');
     getThreads();
     setThreadUpdated(false);
-  }, [threadUpdated]);
+    // threadInfo = sortThreadsTwo(criteria, direction, threadInfo);
+    // console.log('thread info');
+    // console.log(threadInfo);
+  }, [threadUpdated, criteria, direction]);
 
   const threadInfo = useAppSelector((state) => state.thread.ThreadArr);
 

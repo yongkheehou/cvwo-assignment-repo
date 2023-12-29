@@ -4,6 +4,8 @@ import Button from '@mui/material/Button';
 import React from 'react';
 import { useConfirm } from '../../hooks/userConfirmation';
 import CreateIcon from '@mui/icons-material/Create';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
   position: 'absolute',
@@ -48,7 +50,12 @@ export default function CreatePostModal() {
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: 400 }}>
-          <h2 id="parent-modal-title">Text in a modal</h2>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <h2 id="parent-modal-title">Create a New Thread</h2>
+            <IconButton onClick={handleAction}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
           <p id="parent-modal-description">
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
           </p>

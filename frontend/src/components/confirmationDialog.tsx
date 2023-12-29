@@ -19,14 +19,6 @@ export const ConfirmDialog = () => {
     pb: 3,
   };
 
-  // const [open, setOpen] = React.useState(false);
-  // const handleOpen = () => {
-  //   setOpen(true);
-  // };
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-
   const { isAsking, message, options, deny, confirm } = useConfirm();
 
   return (

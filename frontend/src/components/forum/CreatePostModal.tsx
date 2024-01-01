@@ -42,6 +42,12 @@ export default function CreatePostModal() {
 
   const [submittedContent, setSubmittedContent] = useState('');
 
+  const [title, setTitle] = useState('');
+
+  function onChange(text: string) {
+    setTitle(text);
+  }
+
   return (
     <div>
       <Button onClick={handleOpen} variant="contained" endIcon={<CreateIcon />}>
@@ -70,17 +76,23 @@ export default function CreatePostModal() {
           >
             <TextField
               sx={{ margin: 1 }}
-              error
+              error={title.length === 0 ? true : false}
               id="outlined-error-helper-text"
-              label="Error"
-              defaultValue="Hello World"
-              helperText="Incorrect entry."
-            />
+              label="Thread Title"
+              defaultValue=""
+              helperText="Note: thread title cannot be empty"
+              onChange={(event) => onChange(event.target.value)}
+            ></TextField>
             <Editor setSubmittedContent={setSubmittedContent} />
           </Box>
 
-          <Button onClick={() => console.log(submittedContent)}>
-            Log HTML
+          <Button
+            variant="contained"
+            sx={{ mt: 4 }}
+            size="small"
+            onClick={() => console.log(submittedContent)}
+          >
+            Post
           </Button>
         </Box>
       </Modal>

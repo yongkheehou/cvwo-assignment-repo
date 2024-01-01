@@ -6,17 +6,7 @@ import { useConfirm } from '../../hooks/userConfirmation';
 import CreateIcon from '@mui/icons-material/Create';
 import { IconButton, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import StarterKit from '@tiptap/starter-kit';
-import {
-  MenuButtonBold,
-  MenuButtonItalic,
-  MenuControlsContainer,
-  MenuDivider,
-  MenuSelectHeading,
-  RichTextEditor,
-  type RichTextEditorRef,
-} from 'mui-tiptap';
-import { useRef } from 'react';
+import { useState } from 'react';
 import Editor from './editor/RichTextEditor';
 
 const style = {
@@ -50,7 +40,7 @@ export default function CreatePostModal() {
     }
   };
 
-  const rteRef = useRef<RichTextEditorRef>(null);
+  const [submittedContent, setSubmittedContent] = useState('');
 
   return (
     <div>
@@ -86,12 +76,10 @@ export default function CreatePostModal() {
               defaultValue="Hello World"
               helperText="Incorrect entry."
             />
-            <Editor />
+            <Editor setSubmittedContent={setSubmittedContent} />
           </Box>
 
-          <Button
-            onClick={() => console.log(rteRef.current?.editor?.getHTML())}
-          >
+          <Button onClick={() => console.log(submittedContent)}>
             Log HTML
           </Button>
         </Box>

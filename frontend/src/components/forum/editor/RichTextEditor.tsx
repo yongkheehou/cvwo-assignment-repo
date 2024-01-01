@@ -11,16 +11,19 @@ import {
 import EditorControls from './EditorControls';
 import useExtensions from './useExtensions';
 import React from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function Editor() {
+interface Props {
+  setSubmittedContent: Dispatch<SetStateAction<string>>;
+}
+
+export default function Editor({ setSubmittedContent }: Props) {
   const extensions = useExtensions({
     placeholder: 'Thread content',
   });
   const rteRef = useRef<RichTextEditorRef>(null);
   const [isEditable, setIsEditable] = useState(true);
   const [showMenuBar, setShowMenuBar] = useState(true);
-
-  const [submittedContent, setSubmittedContent] = useState('');
 
   return (
     <>
@@ -102,6 +105,7 @@ export default function Editor() {
                     setSubmittedContent(
                       rteRef.current?.editor?.getHTML() ?? '',
                     );
+                    console.log(rteRef.current?.editor?.getHTML() ?? '');
                   }}
                 >
                   Save

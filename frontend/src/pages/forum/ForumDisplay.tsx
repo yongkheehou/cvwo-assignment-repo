@@ -103,9 +103,10 @@ export const ForumDisplay = ({
                 )}
               />
               <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  {thread.Content}
-                </Typography>
+                {/* <Typography variant="body2" color="text.secondary"> */}
+                {/* {<div>{thread.Content}</div>} */}
+                <div>{'First · Second'}</div>
+                {/* </Typography> */}
               </CardContent>
               <CardActions disableSpacing>
                 <IconButton

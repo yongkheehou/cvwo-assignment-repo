@@ -47,6 +47,7 @@ export const createThread = createAsyncThunk(
 
       // localStorage.setItem('userInfo', JSON.stringify(response.data));
 
+      console.log(response.data);
       return response.data;
     } catch (error: unknown) {
       const err = error as Error | AxiosError;
@@ -149,7 +150,13 @@ const threadSlice = createSlice({
         ),
         (state, action: PayloadAction<Thread[]>) => {
           state.Status = 'idle';
-          state.ThreadArr = action.payload.sort((a, b) => b.ID - a.ID);
+          state.ThreadArr = [].slice.call(action.payload).sort(function (
+            a: Thread,
+            b: Thread,
+          ) {
+            return b.ID - a.ID;
+          });
+          // action.payload.sort((a, b) => b.ID - a.ID);
           console.log(action);
         },
       )

@@ -9,6 +9,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import Editor from './editor/RichTextEditor';
 import { createThread } from '../../features/forum/ThreadSlice';
+import { ThreadUpload } from '../../features/forum/ForumModels';
+import { useAppDispatch } from '../../hooks/ReduxHooks';
 
 const style = {
   position: 'absolute',
@@ -25,6 +27,8 @@ const style = {
 };
 
 export default function CreatePostModal() {
+  const dispatch = useAppDispatch();
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -47,6 +51,10 @@ export default function CreatePostModal() {
 
   function onChange(text: string) {
     setTitle(text);
+  }
+
+  async function onCreate(data: ThreadUpload) {
+    await dispatch(createThread(data)).unwrap();
   }
 
   return (
@@ -91,16 +99,17 @@ export default function CreatePostModal() {
             variant="contained"
             sx={{ mt: 4 }}
             size="small"
-            onClick={() =>
-              createThread({
+            onClick={() => {
+              console.log(1010);
+              onCreate({
                 Title: title,
                 Content: submittedContent,
                 Tags: 'abs',
                 Likes: 0,
                 UserID: 10000,
                 Comments: null,
-              })
-            }
+              });
+            }}
           >
             Post
           </Button>

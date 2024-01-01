@@ -47,6 +47,10 @@ export default function Editor({ setSubmittedContent }: Props) {
           ref={rteRef}
           extensions={extensions}
           // content={}
+          onUpdate={() => {
+            setSubmittedContent(rteRef.current?.editor?.getHTML() ?? '');
+            console.log(rteRef.current?.editor?.getHTML() ?? '');
+          }}
           editable={isEditable}
           renderControls={() => <EditorControls />}
           RichTextFieldProps={{
@@ -97,19 +101,6 @@ export default function Editor({ setSubmittedContent }: Props) {
                   selected={!isEditable}
                   IconComponent={isEditable ? Lock : LockOpen}
                 />
-
-                <Button
-                  variant="contained"
-                  size="small"
-                  onClick={() => {
-                    setSubmittedContent(
-                      rteRef.current?.editor?.getHTML() ?? '',
-                    );
-                    console.log(rteRef.current?.editor?.getHTML() ?? '');
-                  }}
-                >
-                  Save
-                </Button>
               </Stack>
             ),
           }}

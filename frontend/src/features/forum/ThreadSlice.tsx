@@ -156,7 +156,6 @@ const threadSlice = createSlice({
           ) {
             return b.ID - a.ID;
           });
-          // action.payload.sort((a, b) => b.ID - a.ID);
           console.log(action);
         },
       )

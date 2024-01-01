@@ -20,6 +20,7 @@ import { NotifType } from '../../features/auth/AuthModels';
 import { ErrorWithMessage } from '../../features/sharedTypes';
 import { Dispatch, SetStateAction } from 'react';
 import { sortThreadsTwo } from './Helpers';
+import { Markup } from 'interweave';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -103,10 +104,9 @@ export const ForumDisplay = ({
                 )}
               />
               <CardContent>
-                {/* <Typography variant="body2" color="text.secondary"> */}
-                {/* {<div>{thread.Content}</div>} */}
-                <div>{'First · Second'}</div>
-                {/* </Typography> */}
+                <Typography variant="body2" color="text.primary">
+                  <Markup content={thread.Content} />
+                </Typography>
               </CardContent>
               <CardActions disableSpacing>
                 <IconButton

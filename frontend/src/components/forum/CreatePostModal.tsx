@@ -109,6 +109,7 @@ export default function CreatePostModal() {
                 UserID: 10000,
                 Comments: null,
               });
+              handleClose();
             }}
           >
             Post

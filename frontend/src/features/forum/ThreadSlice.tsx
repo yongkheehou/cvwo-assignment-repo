@@ -6,7 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import AxiosInstance from '../../api/AxiosInstance';
 import { AxiosError, isAxiosError } from 'axios';
-import { Thread, ThreadApiState } from './ForumModels';
+import { Thread, ThreadApiState, ThreadUpload } from './ForumModels';
 import { ErrorWithMessage } from '../sharedTypes';
 
 const initialState: ThreadApiState = {
@@ -41,7 +41,7 @@ export const getFilteredThreads = createAsyncThunk(
 
 export const createThread = createAsyncThunk(
   'createthread',
-  async (data: Thread, { rejectWithValue }) => {
+  async (data: ThreadUpload, { rejectWithValue }) => {
     try {
       const response = await AxiosInstance.post('createthread', data);
 

@@ -8,6 +8,7 @@ import { IconButton, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import Editor from './editor/RichTextEditor';
+import { createThread } from '../../features/forum/ThreadSlice';
 
 const style = {
   position: 'absolute',
@@ -90,7 +91,16 @@ export default function CreatePostModal() {
             variant="contained"
             sx={{ mt: 4 }}
             size="small"
-            onClick={() => console.log(submittedContent)}
+            onClick={() =>
+              createThread({
+                Title: title,
+                Content: submittedContent,
+                Tags: 'abs',
+                Likes: 0,
+                UserID: 10000,
+                Comments: null,
+              })
+            }
           >
             Post
           </Button>

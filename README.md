@@ -1,3 +1,10 @@
+# Setup Guide
+
+- Create a .env file in the /backend folder, following the format of the sample.env file provided in the /backend folder
+- to start the backend service and postgresql database, run `make run` in the /backend folder
+- to start the frontend service, run `make run` in the /frontend folder
+
+
 contents
 
 user manual (reproduction guide + env var)

@@ -12,10 +12,10 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAppDispatch } from '../../hooks/ReduxHooks';
 import { useMemo, useState } from 'react';
-import { likeThread } from '../../features/forum/ThreadSlice';
+import { deleteThread, likeThread } from '../../features/forum/ThreadSlice';
 import React from 'react';
 import { showNotif } from '../../features/auth/NotifSlice';
-import { Thread } from '../../features/forum/ForumModels';
+import { Thread, ThreadUpload } from '../../features/forum/ForumModels';
 import { NotifType } from '../../features/auth/AuthModels';
 import { ErrorWithMessage } from '../../features/sharedTypes';
 import { Dispatch, SetStateAction } from 'react';
@@ -95,6 +95,10 @@ export const ForumDisplay = ({
       );
     }
   };
+
+  async function onDelete(data: Thread) {
+    await dispatch(deleteThread(data)).unwrap();
+  }
 
   if (Array.isArray(sortedThreads)) {
     return (
@@ -187,7 +191,10 @@ export const ForumDisplay = ({
             <Typography textAlign="center">Update</Typography>
           </MenuItem>
 
-          <MenuItem key="logout" onClick={() => console.log(1)}>
+          <MenuItem
+            key="logout"
+            onClick={() => onDelete(currentThread as Thread)}
+          >
             <Typography textAlign="center">Delete</Typography>
           </MenuItem>
         </Menu>

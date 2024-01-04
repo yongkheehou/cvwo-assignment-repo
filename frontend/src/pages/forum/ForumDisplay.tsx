@@ -10,9 +10,9 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
-import { useEffect, useMemo, useState } from 'react';
-import { getAllThreads, likeThread } from '../../features/forum/ThreadSlice';
+import { useAppDispatch } from '../../hooks/ReduxHooks';
+import { useMemo, useState } from 'react';
+import { likeThread } from '../../features/forum/ThreadSlice';
 import React from 'react';
 import { showNotif } from '../../features/auth/NotifSlice';
 import { Thread } from '../../features/forum/ForumModels';
@@ -21,6 +21,8 @@ import { ErrorWithMessage } from '../../features/sharedTypes';
 import { Dispatch, SetStateAction } from 'react';
 import { sortThreadsTwo } from './Helpers';
 import { Markup } from 'interweave';
+import { MoreVert } from '@mui/icons-material';
+import { Menu, MenuItem } from '@mui/material';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -51,6 +53,18 @@ export const ForumDisplay = ({
   setThreadUpdated,
 }: Props) => {
   const [expanded, setExpanded] = useState(false);
+
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null,
+  );
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorElUser(null);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -98,11 +112,20 @@ export const ForumDisplay = ({
                     {thread.UserID}
                   </Avatar>
                 }
+                action={
+                  <IconButton
+                    aria-label="settings"
+                    onClick={handleOpenUserMenu}
+                  >
+                    <MoreVert />
+                  </IconButton>
+                }
                 title={thread.Title}
                 subheader={thread.CreatedAt.match(
                   /(\d{1,4}([.\-/])\d{1,2}([.\-/])\d{1,4})/g,
                 )}
               />
+
               <CardContent>
                 <Typography variant="body2" color="text.primary">
                   <Markup content={thread.Content} />
@@ -133,6 +156,30 @@ export const ForumDisplay = ({
             </Card>
           );
         })}
+        <Menu
+          sx={{ mt: '45px' }}
+          id="menu-appbar"
+          anchorEl={anchorElUser}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={Boolean(anchorElUser)}
+          onClose={handleCloseMenu}
+        >
+          <MenuItem key="profile" onClick={() => console.log(1)}>
+            <Typography textAlign="center">Profile</Typography>
+          </MenuItem>
+
+          <MenuItem key="logout" onClick={() => console.log(1)}>
+            <Typography textAlign="center">Logout</Typography>
+          </MenuItem>
+        </Menu>
       </>
     );
   } else {

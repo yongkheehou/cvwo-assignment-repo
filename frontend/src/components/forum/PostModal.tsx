@@ -7,7 +7,7 @@ import { IconButton, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import Editor from './editor/RichTextEditor';
-import { createThread } from '../../features/forum/ThreadSlice';
+import { createThread, updateThread } from '../../features/forum/ThreadSlice';
 import { Thread, ThreadUpload } from '../../features/forum/ForumModels';
 import { useAppDispatch } from '../../hooks/ReduxHooks';
 
@@ -54,6 +54,10 @@ export default function PostModal({ open, handleClose, thread }: Props) {
     await dispatch(createThread(data)).unwrap();
   }
 
+  async function onUpdate(data: Thread) {
+    await dispatch(updateThread(data)).unwrap();
+  }
+
   return (
     <div>
       <Modal
@@ -98,14 +102,24 @@ export default function PostModal({ open, handleClose, thread }: Props) {
             size="small"
             onClick={() => {
               console.log(1010);
-              onCreate({
-                Title: title,
-                Content: submittedContent,
-                Tags: 'abs',
-                Likes: 0,
-                UserID: 10000,
-                Comments: null,
-              });
+              {
+                !thread
+                  ? onCreate({
+                      Title: title,
+                      Content: submittedContent,
+                      Tags: 'abs',
+                      Likes: 0,
+                      UserID: 10000,
+                      Comments: null,
+                    })
+                  : onUpdate({
+                      ...thread,
+                      Title: title,
+                      Content: submittedContent,
+                      Tags: 'abs',
+                    });
+              }
+
               handleClose();
             }}
           >

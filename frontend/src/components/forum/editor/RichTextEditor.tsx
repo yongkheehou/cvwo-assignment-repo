@@ -15,9 +15,10 @@ import { Dispatch, SetStateAction } from 'react';
 
 interface Props {
   setSubmittedContent: Dispatch<SetStateAction<string>>;
+  content: string | undefined;
 }
 
-export default function Editor({ setSubmittedContent }: Props) {
+export default function Editor({ setSubmittedContent, content }: Props) {
   const extensions = useExtensions({
     placeholder: 'Thread content',
   });
@@ -46,7 +47,7 @@ export default function Editor({ setSubmittedContent }: Props) {
         <RichTextEditor
           ref={rteRef}
           extensions={extensions}
-          // content={}
+          content={content}
           onUpdate={() => {
             setSubmittedContent(rteRef.current?.editor?.getHTML() ?? '');
             console.log(rteRef.current?.editor?.getHTML() ?? '');

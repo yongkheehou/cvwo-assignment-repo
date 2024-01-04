@@ -3,13 +3,12 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import React from 'react';
 import { useConfirm } from '../../hooks/userConfirmation';
-import CreateIcon from '@mui/icons-material/Create';
 import { IconButton, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import Editor from './editor/RichTextEditor';
 import { createThread } from '../../features/forum/ThreadSlice';
-import { ThreadUpload } from '../../features/forum/ForumModels';
+import { Thread, ThreadUpload } from '../../features/forum/ForumModels';
 import { useAppDispatch } from '../../hooks/ReduxHooks';
 
 const style = {
@@ -26,16 +25,14 @@ const style = {
   pb: 3,
 };
 
-export default function CreatePostModal() {
-  const dispatch = useAppDispatch();
+interface Props {
+  open: boolean;
+  handleClose: () => void;
+  thread: Thread | null;
+}
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+export default function PostModal({ open, handleClose, thread }: Props) {
+  const dispatch = useAppDispatch();
 
   const { ask } = useConfirm();
 
@@ -59,9 +56,6 @@ export default function CreatePostModal() {
 
   return (
     <div>
-      <Button onClick={handleOpen} variant="contained" endIcon={<CreateIcon />}>
-        New Thread
-      </Button>
       <Modal
         open={open}
         onClose={handleAction}
@@ -84,15 +78,18 @@ export default function CreatePostModal() {
             }}
           >
             <TextField
+              defaultValue={thread?.Title}
               sx={{ margin: 1 }}
               error={title.length === 0 ? true : false}
               id="outlined-error-helper-text"
               label="Thread Title"
-              defaultValue=""
               helperText="Note: thread title cannot be empty"
               onChange={(event) => onChange(event.target.value)}
             ></TextField>
-            <Editor setSubmittedContent={setSubmittedContent} />
+            <Editor
+              setSubmittedContent={setSubmittedContent}
+              content={thread?.Content}
+            />
           </Box>
 
           <Button

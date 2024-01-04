@@ -23,6 +23,7 @@ import { sortThreadsTwo } from './Helpers';
 import { Markup } from 'interweave';
 import { MoreVert } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
+import PostModal from '../../components/forum/PostModal';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -52,11 +53,12 @@ export const ForumDisplay = ({
   threadInfo,
   setThreadUpdated,
 }: Props) => {
+  const [openPostModal, setOpenPostModal] = useState(false);
+  const [currentThread, setCurrentThread] = useState<Thread | null>(null);
+
   const [expanded, setExpanded] = useState(false);
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null,
-  );
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -115,7 +117,10 @@ export const ForumDisplay = ({
                 action={
                   <IconButton
                     aria-label="settings"
-                    onClick={handleOpenUserMenu}
+                    onClick={(event: React.MouseEvent<HTMLElement>) => {
+                      setCurrentThread(thread);
+                      handleOpenUserMenu(event);
+                    }}
                   >
                     <MoreVert />
                   </IconButton>
@@ -172,14 +177,25 @@ export const ForumDisplay = ({
           open={Boolean(anchorElUser)}
           onClose={handleCloseMenu}
         >
-          <MenuItem key="profile" onClick={() => console.log(1)}>
-            <Typography textAlign="center">Profile</Typography>
+          {/* how to pass thread id here??? */}
+          <MenuItem
+            key="profile"
+            onClick={() => {
+              setOpenPostModal(true);
+            }}
+          >
+            <Typography textAlign="center">Update</Typography>
           </MenuItem>
 
           <MenuItem key="logout" onClick={() => console.log(1)}>
-            <Typography textAlign="center">Logout</Typography>
+            <Typography textAlign="center">Delete</Typography>
           </MenuItem>
         </Menu>
+        <PostModal
+          open={openPostModal}
+          handleClose={() => setOpenPostModal(false)}
+          thread={currentThread}
+        />
       </>
     );
   } else {

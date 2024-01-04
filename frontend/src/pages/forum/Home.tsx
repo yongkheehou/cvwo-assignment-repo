@@ -6,7 +6,8 @@ import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
 import { getAllThreads } from '../../features/forum/ThreadSlice';
 import { INCREASING, TITLE } from '../../utils/Constants';
-import CreatePostModal from '../../components/forum/CreatePostModal';
+import PostModal from '../../components/forum/PostModal';
+import CreateIcon from '@mui/icons-material/Create';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +31,15 @@ const Home = () => {
 
   const threadInfo = useAppSelector((state) => state.thread.ThreadArr);
 
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Stack sx={{ display: 'flex', alignItems: 'center' }}>
       <h1>Threads</h1>
@@ -38,6 +48,7 @@ const Home = () => {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
+            flexDirection: 'col',
             padding: 1,
             margin: 1,
           }}
@@ -48,8 +59,15 @@ const Home = () => {
             direction={direction}
             setDirection={setDirection}
           />
-          <CreatePostModal />
+          <Button
+            onClick={handleOpen}
+            variant="contained"
+            endIcon={<CreateIcon />}
+          >
+            New Thread
+          </Button>
         </Box>
+        <PostModal open={open} handleClose={handleClose} thread={null} />
         <Box sx={{ alignItems: 'center' }}>
           <ForumDisplay
             criteria={criteria}

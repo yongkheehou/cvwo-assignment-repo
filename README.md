@@ -5,22 +5,15 @@
 - to start the frontend service, run `make run` in the /frontend folder
 
 
-contents
+# Contents (to be updated)
 
 user manual (reproduction guide + env var)
-
-./backend environment variables
-- BACKEND_PORT
-
-./frontend environment variables
-- FRONTEND_PORT
-- BACKEND_PORT
 
 mono repo design
 
 backend architecture
 
-frontend framework + ui library + redux flux architecture
+frontend framework + ui library 
 
 deployment
 - docker compose in both frontend and backend folder

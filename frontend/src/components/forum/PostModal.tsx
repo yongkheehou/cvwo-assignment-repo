@@ -10,6 +10,8 @@ import Editor from './editor/RichTextEditor';
 import { createThread, updateThread } from '../../features/forum/ThreadSlice';
 import { Thread, ThreadUpload } from '../../features/forum/ForumModels';
 import { useAppDispatch } from '../../hooks/reduxHooks';
+import { showNotif } from '../../features/errors/NotifSlice';
+import { NotifType } from '../../features/auth/authModels';
 
 const style = {
   position: 'absolute',
@@ -103,26 +105,38 @@ export default function PostModal({ open, handleClose, thread }: Props) {
             sx={{ mt: 4 }}
             size="small"
             onClick={() => {
-              console.log(1010);
-              {
-                !thread
-                  ? onCreate({
-                      Title: title,
-                      Content: submittedContent,
-                      Tags: 'abs',
-                      Likes: 0,
-                      UserID: 10000,
-                      Comments: null,
-                    })
-                  : onUpdate({
-                      ...thread,
-                      Title: title,
-                      Content: submittedContent,
-                      Tags: 'abs',
-                    });
-              }
+              if (title.length > 0) {
+                console.log(1010);
+                {
+                  !thread
+                    ? onCreate({
+                        Title: title,
+                        Content: submittedContent,
+                        Tags: 'abs',
+                        Likes: 0,
+                        UserID: 10000,
+                        Comments: null,
+                      })
+                    : onUpdate({
+                        ...thread,
+                        Title: title,
+                        Content: submittedContent,
+                        Tags: 'abs',
+                      });
+                }
 
-              handleClose();
+                setTitle('');
+
+                handleClose();
+              } else {
+                dispatch(
+                  showNotif({
+                    open: true,
+                    message: 'Title cannot be empty',
+                    notifType: NotifType.Error,
+                  }),
+                );
+              }
             }}
           >
             Post

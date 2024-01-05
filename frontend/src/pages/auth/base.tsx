@@ -20,7 +20,7 @@ import {
 } from '@reduxjs/toolkit/dist/createAsyncThunk';
 import { LOGIN, SIGNUP } from '../../utils/constants';
 import authSchema from './authModels';
-import { showNotif } from '../../features/auth/NotifSlice';
+import { showNotif } from '../../features/errors/NotifSlice';
 import { NotifType } from '../../features/auth/authModels';
 
 const Base = (

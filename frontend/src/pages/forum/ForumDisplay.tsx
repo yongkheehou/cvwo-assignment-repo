@@ -14,7 +14,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks';
 import { useMemo, useState } from 'react';
 import { deleteThread, likeThread } from '../../features/forum/ThreadSlice';
 import React from 'react';
-import { showNotif } from '../../features/auth/NotifSlice';
+import { showNotif } from '../../features/errors/NotifSlice';
 import { Thread } from '../../features/forum/ForumModels';
 import { NotifType } from '../../features/auth/authModels';
 import { ErrorWithMessage } from '../../features/sharedTypes';

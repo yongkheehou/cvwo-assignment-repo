@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/auth/authSlice';
 import userReducer from './features/user/UserSlice';
-import notifReducer from './features/auth/NotifSlice';
+import notifReducer from './features/errors/NotifSlice';
 import threadReducer from './features/forum/ThreadSlice';
 
 const store = configureStore({

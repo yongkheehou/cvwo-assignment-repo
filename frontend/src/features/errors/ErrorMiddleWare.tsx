@@ -1,6 +1,6 @@
 import { Middleware, PayloadAction, isAction } from '@reduxjs/toolkit';
 import { showNotif } from './NotifSlice';
-import { NotifType, Notif } from './authModels';
+import { NotifType, Notif } from '../auth/authModels';
 
 export const axiosMiddleware: Middleware =
   ({ dispatch }) =>

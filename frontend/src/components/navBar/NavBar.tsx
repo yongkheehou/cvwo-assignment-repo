@@ -12,9 +12,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ForumIcon from '@mui/icons-material/Forum';
-import { LOGIN, SIGNUP } from '../../utils/Constants';
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
-import { logout } from '../../features/auth/AuthSlice';
+import { LOGIN, SIGNUP } from '../../utils/constants';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { logout } from '../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const settings = ['Profile', 'Logout'];

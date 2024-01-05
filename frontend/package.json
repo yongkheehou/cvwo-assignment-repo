@@ -7,7 +7,6 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.15.2",
-    "@mui/material": "^5.15.2",
     "@reduxjs/toolkit": "^2.0.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -39,6 +38,7 @@
     "@types/node": "^16.18.68",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
+    "@types/redux": "^3.6.31",
     "axios": "^1.6.2",
     "interweave": "^13.1.0",
     "mui-tiptap": "^1.8.6",
@@ -77,6 +77,10 @@
     ]
   },
   "devDependencies": {
+    "@mui/material": "^5.15.3",
+    "@mui/types": "^7.2.12",
+    "@types/axios": "^0.14.0",
+    "@types/react-redux": "^7.1.33",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",

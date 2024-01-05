@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Notif, NotifType } from './AuthModels';
+import { Notif, NotifType } from './authModels';
 
 const initialState = {
   open: false,

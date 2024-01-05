@@ -2,9 +2,9 @@ import {
   createAsyncThunk,
   createSlice,
   PayloadAction,
-  isAnyOf,
+  Draft,
 } from '@reduxjs/toolkit';
-import AxiosInstance from '../../api/AxiosInstance';
+import AxiosInstance from '../../api/axiosInstance';
 import { AxiosError, isAxiosError } from 'axios';
 import { Thread, ThreadApiState, ThreadUpload } from './ForumModels';
 import { ErrorWithMessage } from '../sharedTypes';
@@ -20,7 +20,6 @@ export const getAllThreads = createAsyncThunk('threads', async () => {
   return response.data;
 });
 
-// TODO: implement filtering/ sorting of threads by tag
 export const getFilteredThreads = createAsyncThunk(
   'threads',
   async (userId: string, { rejectWithValue }) => {
@@ -30,10 +29,8 @@ export const getFilteredThreads = createAsyncThunk(
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         const errorResponse = error.response.data;
-
         return rejectWithValue(errorResponse);
       }
-
       throw error;
     }
   },
@@ -44,21 +41,15 @@ export const createThread = createAsyncThunk(
   async (data: ThreadUpload, { rejectWithValue }) => {
     try {
       const response = await AxiosInstance.post('createthread', data);
-
-      // localStorage.setItem('userInfo', JSON.stringify(response.data));
-
-      console.log(response.data);
       return response.data;
     } catch (error: unknown) {
       const err = error as Error | AxiosError;
       if (isAxiosError(err)) {
         if (err.response) {
           const errResponse = err.response.data;
-
           return rejectWithValue(errResponse);
         }
       }
-
       throw error;
     }
   },
@@ -73,10 +64,8 @@ export const updateThread = createAsyncThunk(
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         const errorResponse = error.response.data;
-
         return rejectWithValue(errorResponse);
       }
-
       throw error;
     }
   },
@@ -94,10 +83,8 @@ export const likeThread = createAsyncThunk(
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         const errorResponse = error.response.data;
-
         return rejectWithValue(errorResponse);
       }
-
       throw error;
     }
   },
@@ -108,14 +95,12 @@ export const deleteThread = createAsyncThunk(
   async (data: Thread, { rejectWithValue }) => {
     try {
       const response = await AxiosInstance.delete(`/thread/${data.ID}`);
-      return response.data;
+      return data.ID;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         const errorResponse = error.response.data;
-
         return rejectWithValue(errorResponse);
       }
-
       throw error;
     }
   },
@@ -127,58 +112,110 @@ const threadSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addMatcher(
-        isAnyOf(
-          getAllThreads.pending,
-          getFilteredThreads.pending,
-          createThread.pending,
-          updateThread.pending,
-          deleteThread.pending,
-        ),
-        (state) => {
-          state.Status = 'loading';
-          state.Error = null;
-        },
-      )
-      .addMatcher(
-        isAnyOf(
-          getAllThreads.fulfilled,
-          getFilteredThreads.fulfilled,
-          createThread.fulfilled,
-          updateThread.fulfilled,
-          deleteThread.fulfilled,
-        ),
+      .addCase(getAllThreads.pending, (state) => {
+        state.Status = 'loading';
+        state.Error = null;
+      })
+      .addCase(
+        getAllThreads.fulfilled,
         (state, action: PayloadAction<Thread[]>) => {
           state.Status = 'idle';
-          state.ThreadArr = [].slice.call(action.payload).sort(function (
-            a: Thread,
-            b: Thread,
-          ) {
-            return b.ID - a.ID;
-          });
-          console.log(action);
+          state.ThreadArr = action.payload;
         },
       )
-      .addMatcher(
-        isAnyOf(
-          getAllThreads.rejected,
-          getFilteredThreads.rejected,
-          createThread.rejected,
-          updateThread.rejected,
-          deleteThread.rejected,
-        ),
-        (state, action) => {
-          state.Status = 'failed';
-          if (action.payload) {
-            state.Error =
-              (action.payload as ErrorWithMessage).message ||
-              'Could not complete action';
-          } else {
-            state.Error = action.error.message || 'Could not complete action';
-          }
-          console.log(action);
+      .addCase(getAllThreads.rejected, (state, action) => {
+        state.Status = 'failed';
+
+        if (action.payload) {
+          state.Error =
+            (action.payload as ErrorWithMessage).message ||
+            'Could not complete action';
+        } else {
+          state.Error = action.error.message || 'Could not complete action';
+        }
+      })
+      .addCase(createThread.pending, (state) => {
+        state.Status = 'loading';
+        state.Error = null;
+      })
+      .addCase(
+        createThread.fulfilled,
+        (state, action: PayloadAction<Thread>) => {
+          state.Status = 'idle';
+          state.ThreadArr?.push(action.payload);
         },
-      );
+      )
+      .addCase(createThread.rejected, (state, action) => {
+        state.Status = 'failed';
+
+        if (action.payload) {
+          state.Error =
+            (action.payload as ErrorWithMessage).message ||
+            'Could not complete action';
+        } else {
+          state.Error = action.error.message || 'Could not complete action';
+        }
+      })
+      .addCase(updateThread.pending, (state) => {
+        state.Status = 'loading';
+        state.Error = null;
+      })
+      .addCase(
+        updateThread.fulfilled,
+        (state, action: PayloadAction<Thread>) => {
+          state.Status = 'idle';
+          const threadArr = state.ThreadArr ?? [];
+
+          const index = threadArr?.findIndex(
+            (thread) => thread.ID === action.payload.ID,
+          );
+
+          if (index !== -1) {
+            state.ThreadArr = [
+              ...threadArr.slice(0, index),
+              action.payload,
+              ...threadArr.slice(index + 1),
+            ];
+          }
+        },
+      )
+      .addCase(updateThread.rejected, (state, action) => {
+        state.Status = 'failed';
+
+        if (action.payload) {
+          state.Error =
+            (action.payload as ErrorWithMessage).message ||
+            'Could not complete action';
+        } else {
+          state.Error = action.error.message || 'Could not complete action';
+        }
+      })
+      .addCase(deleteThread.pending, (state) => {
+        state.Status = 'loading';
+        state.Error = null;
+      })
+      .addCase(
+        deleteThread.fulfilled,
+        (state, action: PayloadAction<number>) => {
+          state.Status = 'idle';
+          const newThread =
+            state.ThreadArr?.filter((thread) => thread.ID !== action.payload) ||
+            [];
+
+          state.ThreadArr = newThread;
+        },
+      )
+      .addCase(deleteThread.rejected, (state, action) => {
+        state.Status = 'failed';
+
+        if (action.payload) {
+          state.Error =
+            (action.payload as ErrorWithMessage).message ||
+            'Could not complete action';
+        } else {
+          state.Error = action.error.message || 'Could not complete action';
+        }
+      });
   },
 });
 

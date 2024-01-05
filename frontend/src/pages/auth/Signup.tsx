@@ -1,6 +1,6 @@
-import { signup } from '../../features/auth/AuthSlice';
-import { SIGNUP } from '../../utils/Constants';
-import Base from './Base';
+import { signup } from '../../features/auth/authSlice';
+import { SIGNUP } from '../../utils/constants';
+import Base from './base';
 
 export default function Signup() {
   return Base(signup, SIGNUP);

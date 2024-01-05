@@ -9,7 +9,7 @@ import { useState } from 'react';
 import Editor from './editor/RichTextEditor';
 import { createThread, updateThread } from '../../features/forum/ThreadSlice';
 import { Thread, ThreadUpload } from '../../features/forum/ForumModels';
-import { useAppDispatch } from '../../hooks/ReduxHooks';
+import { useAppDispatch } from '../../hooks/reduxHooks';
 
 const style = {
   position: 'absolute',

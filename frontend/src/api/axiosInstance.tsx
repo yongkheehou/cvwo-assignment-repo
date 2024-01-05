@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BACKEND_URL } from '../utils/Constants';
+import { BACKEND_URL } from '../utils/constants';
 
 // Create an Axios instance with default options
 const AxiosInstance = axios.create({

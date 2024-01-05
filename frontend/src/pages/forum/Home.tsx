@@ -3,9 +3,9 @@ import { Box, Stack, Button } from '@mui/material';
 import { ForumDisplay } from './ForumDisplay';
 import SortButton from '../../components/forum/SortButton';
 import { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { getAllThreads } from '../../features/forum/ThreadSlice';
-import { INCREASING, TITLE } from '../../utils/Constants';
+import { INCREASING, TITLE } from '../../utils/constants';
 import PostModal from '../../components/forum/PostModal';
 import CreateIcon from '@mui/icons-material/Create';
 

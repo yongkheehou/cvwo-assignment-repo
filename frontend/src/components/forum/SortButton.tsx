@@ -19,7 +19,7 @@ import {
   INCREASING,
   LIKES,
   TITLE,
-} from '../../utils/Constants';
+} from '../../utils/constants';
 
 interface Props {
   criteria: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { useAppSelector } from '../hooks/ReduxHooks';
+import { useAppSelector } from '../hooks/reduxHooks';
 import { Navigate } from 'react-router-dom';
 
 const Layout = () => {

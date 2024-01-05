@@ -6,7 +6,7 @@ import {
   INCREASING,
   LIKES,
   TITLE,
-} from '../../utils/Constants';
+} from '../../utils/constants';
 
 export const sortThreads = (
   criteria: string,

@@ -4,11 +4,11 @@ import {
   PayloadAction,
   isAnyOf,
 } from '@reduxjs/toolkit';
-import AxiosInstance from '../../api/AxiosInstance';
 import { AxiosError } from 'axios';
-import { User, AuthApiState, UserCompleteData } from './AuthModels';
 import { ErrorWithMessage } from '../sharedTypes';
 import useAuth from './useAuth';
+import { AuthApiState, User, UserCompleteData } from './authModels';
+import AxiosInstance from '../../api/axiosInstance';
 
 const initialState: AuthApiState = {
   basicUserInfo: localStorage.getItem('userInfo')

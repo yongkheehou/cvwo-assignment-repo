@@ -11,17 +11,17 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/ReduxHooks';
+import { useAppDispatch } from '../../hooks/reduxHooks';
 import React from 'react';
-import { AuthApiState, User } from '../../features/auth/AuthModels';
+import { AuthApiState, User } from '../../features/auth/authModels';
 import {
   AsyncThunk,
   AsyncThunkConfig,
 } from '@reduxjs/toolkit/dist/createAsyncThunk';
-import { LOGIN, SIGNUP } from '../../utils/Constants';
-import authSchema from './AuthModels';
+import { LOGIN, SIGNUP } from '../../utils/constants';
+import authSchema from './authModels';
 import { showNotif } from '../../features/auth/NotifSlice';
-import { NotifType } from '../../features/auth/AuthModels';
+import { NotifType } from '../../features/auth/authModels';
 
 const Base = (
   onClick: AsyncThunk<any, User, AsyncThunkConfig>,

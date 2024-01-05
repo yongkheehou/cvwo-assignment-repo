@@ -15,16 +15,16 @@ const initialState: ThreadApiState = {
   Error: null,
 };
 
-export const getAllThreads = createAsyncThunk('threads', async () => {
+export const getAllThreads = createAsyncThunk('thread', async () => {
   const response = await AxiosInstance.get(`/getthreads`);
   return response.data;
 });
 
 export const getFilteredThreads = createAsyncThunk(
-  'threads',
-  async (userId: string, { rejectWithValue }) => {
+  'filteredthread',
+  async (threadId: string, { rejectWithValue }) => {
     try {
-      const response = await AxiosInstance.get(`/users/${userId}`);
+      const response = await AxiosInstance.get(`/thread/${threadId}`);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -56,7 +56,7 @@ export const createThread = createAsyncThunk(
 );
 
 export const updateThread = createAsyncThunk(
-  'threads/update',
+  'thread/update',
   async (data: Thread, { rejectWithValue }) => {
     try {
       const response = await AxiosInstance.put(`/thread/${data.ID}`, data);
@@ -72,7 +72,7 @@ export const updateThread = createAsyncThunk(
 );
 
 export const likeThread = createAsyncThunk(
-  'threads/like',
+  'thread/like',
   async (data: Thread, { rejectWithValue }) => {
     try {
       const response = await AxiosInstance.put(`/thread/${data.ID}`, {
@@ -91,7 +91,7 @@ export const likeThread = createAsyncThunk(
 );
 
 export const deleteThread = createAsyncThunk(
-  'threads/delete',
+  'thread/delete',
   async (data: Thread, { rejectWithValue }) => {
     try {
       const response = await AxiosInstance.delete(`/thread/${data.ID}`);

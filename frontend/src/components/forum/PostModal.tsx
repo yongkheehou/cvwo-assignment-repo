@@ -37,7 +37,9 @@ export default function PostModal({ open, handleClose, thread }: Props) {
   const { ask } = useConfirm();
 
   const handleAction = async () => {
-    if (await ask('Stop Creating New Thread?')) {
+    if (
+      await ask(thread ? 'Stop Updating Thread?' : 'Stop Creating New Thread?')
+    ) {
       handleClose();
     }
   };

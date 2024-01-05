@@ -12,6 +12,8 @@ import { Thread, ThreadUpload } from '../../features/forum/ForumModels';
 import { useAppDispatch } from '../../hooks/reduxHooks';
 import { showNotif } from '../../features/errors/NotifSlice';
 import { NotifType } from '../../features/auth/authModels';
+import SearchTags from './tags/SelectTags';
+import CreateTag from './tags/CreateTag';
 
 const style = {
   position: 'absolute',
@@ -100,9 +102,20 @@ export default function PostModal({ open, handleClose, thread }: Props) {
             />
           </Box>
 
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'col',
+              mt: 2,
+            }}
+          >
+            <SearchTags />
+            <CreateTag />
+          </Box>
+
           <Button
             variant="contained"
-            sx={{ mt: 4 }}
+            sx={{ marginLeft: 'auto' }}
             size="small"
             onClick={() => {
               if (title.length > 0) {

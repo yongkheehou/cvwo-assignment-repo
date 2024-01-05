@@ -57,7 +57,7 @@ func CreateThread(c *gin.Context) {
 	thread := models.Thread{
 		Title:    payload.Title,
 		Content:  payload.Content,
-		Tags:     payload.Tags,
+		Tag:      payload.Tag,
 		Likes:    payload.Likes,
 		UserID:   payload.UserID,
 		Comments: nil,

@@ -24,6 +24,7 @@ func ConnectDB() {
 
 func MigrateDB() {
 	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.Tag{})
 	DB.AutoMigrate(&models.Thread{})
 	DB.AutoMigrate(&models.Comment{})
 }

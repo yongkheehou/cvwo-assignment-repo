@@ -24,6 +24,7 @@ func main() {
 	}))
 
 	routes.UserRoute(r)
+	routes.TagRoute(r)
 	routes.ThreadRoute(r)
 	routes.CommentRoute(r)
 

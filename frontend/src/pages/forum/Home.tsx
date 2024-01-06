@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { getAllThreads } from '../../features/forum/ThreadSlice';
 import { INCREASING, TITLE } from '../../utils/constants';
-import PostModal from '../../components/forum/PostModal';
+import ThreadModal from '../../components/forum/ThreadModal';
 import CreateIcon from '@mui/icons-material/Create';
 
 const Home = () => {
@@ -67,7 +67,7 @@ const Home = () => {
             New Thread
           </Button>
         </Box>
-        <PostModal open={open} handleClose={handleClose} thread={null} />
+        <ThreadModal open={open} handleClose={handleClose} thread={null} />
         <Box sx={{ alignItems: 'center' }}>
           <ForumDisplay
             criteria={criteria}

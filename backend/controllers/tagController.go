@@ -16,11 +16,11 @@ func GetAllTags(c *gin.Context) {
 }
 
 func GetSingleTag(c *gin.Context) {
-	id, err := strconv.ParseUint(c.Param("id"), 10, 32) // base 10, 32 bits
+	title, err := strconv.ParseUint(c.Param("title"), 10, 32) // base 10, 32 bits
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid Tag ID",
+			"error": "Invalid Tag Title",
 		})
 
 		return
@@ -28,7 +28,7 @@ func GetSingleTag(c *gin.Context) {
 
 	var tag models.Tag
 
-	e := initializers.DB.Model(&models.Tag{}).Where("id=?", id).Find(&tag).Error
+	e := initializers.DB.Model(&models.Tag{}).Where("title=?", title).Find(&tag).Error
 
 	if e != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

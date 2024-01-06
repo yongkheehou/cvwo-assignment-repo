@@ -22,8 +22,8 @@ import { Dispatch, SetStateAction } from 'react';
 import { sortThreadsTwo } from './Helpers';
 import { Markup } from 'interweave';
 import { MoreVert } from '@mui/icons-material';
-import { Menu, MenuItem } from '@mui/material';
-import PostModal from '../../components/forum/PostModal';
+import { Button, Menu, MenuItem } from '@mui/material';
+import ThreadModal from '../../components/forum/ThreadModal';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -53,7 +53,7 @@ export const ForumDisplay = ({
   threadInfo,
   setThreadUpdated,
 }: Props) => {
-  const [openPostModal, setOpenPostModal] = useState(false);
+  const [openThreadModal, setOpenThreadModal] = useState(false);
   const [currentThread, setCurrentThread] = useState<Thread | null>(null);
 
   const [expanded, setExpanded] = useState(false);
@@ -139,8 +139,19 @@ export const ForumDisplay = ({
                 />
 
                 <CardContent>
-                  <Typography variant="body2" color="text.primary">
+                  <Typography
+                    sx={{ mb: 5 }}
+                    variant="body1"
+                    color="text.primary"
+                  >
                     <Markup content={thread.Content} />
+                  </Typography>
+                  <Typography
+                    aria-label="tag"
+                    variant="body2"
+                    color="text.secondary"
+                  >
+                    <Markup content={`Tag: ${thread.Tag}`} />
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
@@ -151,6 +162,7 @@ export const ForumDisplay = ({
                     <ThumbUpIcon />
                   </IconButton>
                   <Typography>{thread.Likes}</Typography>
+
                   <ExpandMore
                     expand={expanded}
                     onClick={handleExpandClick}
@@ -186,7 +198,7 @@ export const ForumDisplay = ({
                 <MenuItem
                   key="profile"
                   onClick={() => {
-                    setOpenPostModal(true);
+                    setOpenThreadModal(true);
                     // Closed the model when update menu itms is clicked
                     handleCloseMenu();
                   }}
@@ -202,9 +214,9 @@ export const ForumDisplay = ({
           );
         })}
 
-        <PostModal
-          open={openPostModal}
-          handleClose={() => setOpenPostModal(false)}
+        <ThreadModal
+          open={openThreadModal}
+          handleClose={() => setOpenThreadModal(false)}
           thread={currentThread}
         />
       </>

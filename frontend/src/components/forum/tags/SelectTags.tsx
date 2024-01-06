@@ -1,13 +1,24 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete, {
+  AutocompleteChangeDetails,
+  AutocompleteChangeReason,
+} from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { getAllTags } from '../../../features/forum/TagSlice';
 import { useState, useEffect } from 'react';
-import { Tag } from '../../../features/forum/ForumModels';
+import { Tag, TagUpload } from '../../../features/forum/ForumModels';
+import { Dispatch, SetStateAction } from 'react';
+import { showNotif } from '../../../features/errors/NotifSlice';
+import { NotifType } from '../../../features/auth/authModels';
 
-export default function SearchTags() {
+interface Props {
+  tag: TagUpload | null;
+  setTag: Dispatch<SetStateAction<TagUpload | null>>;
+}
+
+export default function SearchTags({ tag, setTag }: Props) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<readonly Tag[]>([]);
   const loading = open && options.length === 0;
@@ -55,10 +66,14 @@ export default function SearchTags() {
       onClose={() => {
         setOpen(false);
       }}
+      // onInputChange={(event) =>
+      //   setTag({ Title: event.target.value });
+      // }
       isOptionEqualToValue={(option, value) => option.Title === value.Title}
       getOptionLabel={(option) => option.Title}
       options={options}
       loading={loading}
+      noOptionsText="no tags created yet"
       renderInput={(params) => (
         <TextField
           {...params}

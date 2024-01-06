@@ -8,12 +8,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import Editor from './editor/RichTextEditor';
 import { createThread, updateThread } from '../../features/forum/ThreadSlice';
-import { Thread, ThreadUpload } from '../../features/forum/ForumModels';
+import {
+  TagUpload,
+  Thread,
+  ThreadUpload,
+} from '../../features/forum/ForumModels';
 import { useAppDispatch } from '../../hooks/reduxHooks';
 import { showNotif } from '../../features/errors/NotifSlice';
 import { NotifType } from '../../features/auth/authModels';
-import SearchTags from './tags/SelectTags';
+// import SearchTags from './tags/SelectTags';
 import CreateTag from './tags/CreateTag';
+import { createTag, getSingleTagByTitle } from '../../features/forum/TagSlice';
 
 const style = {
   position: 'absolute',
@@ -35,7 +40,7 @@ interface Props {
   thread: Thread | null;
 }
 
-export default function PostModal({ open, handleClose, thread }: Props) {
+export default function ThreadModal({ open, handleClose, thread }: Props) {
   const dispatch = useAppDispatch();
 
   const { ask } = useConfirm();
@@ -49,6 +54,7 @@ export default function PostModal({ open, handleClose, thread }: Props) {
   };
 
   const [submittedContent, setSubmittedContent] = useState('');
+  const [tag, setTag] = useState<string>('');
 
   const [title, setTitle] = useState('');
 
@@ -56,11 +62,20 @@ export default function PostModal({ open, handleClose, thread }: Props) {
     setTitle(text);
   }
 
-  async function onCreate(data: ThreadUpload) {
+  // async function onCreateTag(data: TagUpload) {
+  //   try {
+  //     await dispatch(getSingleTagByTitle(data.Title)).unwrap();
+  //   } catch (e) {
+  //     console.log(e);
+  //     await dispatch(createTag(data)).unwrap;
+  //   }
+  // }
+
+  async function onCreateThread(data: ThreadUpload) {
     await dispatch(createThread(data)).unwrap();
   }
 
-  async function onUpdate(data: Thread) {
+  async function onUpdateThread(data: Thread) {
     await dispatch(updateThread(data)).unwrap();
   }
 
@@ -109,32 +124,34 @@ export default function PostModal({ open, handleClose, thread }: Props) {
               mt: 2,
             }}
           >
-            <SearchTags />
-            <CreateTag />
+            {/* <SearchTags tag={tag} setTag={setTag} /> */}
+            <CreateTag tag={tag} setTag={setTag} />
           </Box>
 
           <Button
             variant="contained"
-            sx={{ marginLeft: 'auto' }}
+            sx={{ marginLeft: 'auto', mt: 2 }}
             size="small"
             onClick={() => {
-              if (title.length > 0) {
+              if (title.length > 0 && tag !== null) {
                 console.log(1010);
+                // check if tag exists, else create the tag
+                // onCreateTag(tag);
                 {
                   !thread
-                    ? onCreate({
+                    ? onCreateThread({
                         Title: title,
                         Content: submittedContent,
-                        Tags: 'abs',
+                        Tag: tag,
                         Likes: 0,
                         UserID: 10000,
                         Comments: null,
                       })
-                    : onUpdate({
+                    : onUpdateThread({
                         ...thread,
                         Title: title,
                         Content: submittedContent,
-                        Tags: 'abs',
+                        Tag: tag,
                       });
                 }
 
@@ -145,7 +162,10 @@ export default function PostModal({ open, handleClose, thread }: Props) {
                 dispatch(
                   showNotif({
                     open: true,
-                    message: 'Title cannot be empty',
+                    message:
+                      title === null
+                        ? 'Title cannot be empty'
+                        : 'Tag cannot be empty',
                     notifType: NotifType.Error,
                   }),
                 );

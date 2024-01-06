@@ -56,8 +56,6 @@ export const ForumDisplay = ({
   const [openThreadModal, setOpenThreadModal] = useState(false);
   const [currentThread, setCurrentThread] = useState<Thread | null>(null);
 
-  const [expanded, setExpanded] = useState(false);
-
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -66,10 +64,6 @@ export const ForumDisplay = ({
 
   const handleCloseMenu = () => {
     setAnchorElUser(null);
-  };
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
   };
 
   const dispatch = useAppDispatch();
@@ -106,6 +100,10 @@ export const ForumDisplay = ({
     return (
       <>
         {sortedThreads.map((thread) => {
+          const [expanded, setExpanded] = useState(false);
+          const handleExpandClick = () => {
+            setExpanded(!expanded);
+          };
           return (
             <>
               <Card

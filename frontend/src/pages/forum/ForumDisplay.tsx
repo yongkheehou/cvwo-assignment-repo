@@ -11,7 +11,7 @@ import { red } from '@mui/material/colors';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAppDispatch } from '../../hooks/reduxHooks';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { deleteThread, likeThread } from '../../features/forum/ThreadSlice';
 import React from 'react';
 import { showNotif } from '../../features/errors/NotifSlice';
@@ -80,6 +80,13 @@ export const ForumDisplay = ({
     return sortThreadsTwo(criteria, direction, clonedThreads);
   }, [criteria, direction, threadInfo]);
 
+  // const sortedFilteredThreads = useMemo(() => {
+  //   // console.log('useMemo running');
+  //   return sortedThreads.filter((thread) => {
+  //     thread.Tag in filteredTags;
+  //   });
+  // }, [filteredTags]);
+
   const handleLike = async (thread: Thread) => {
     try {
       await dispatch(likeThread(thread)).unwrap();
@@ -95,6 +102,10 @@ export const ForumDisplay = ({
       );
     }
   };
+
+  // useEffect(() => {
+  //   console.log('filter changed');
+  // }, [filteredTags]);
 
   if (Array.isArray(sortedThreads)) {
     return (

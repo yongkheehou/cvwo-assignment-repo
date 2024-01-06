@@ -8,17 +8,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import Editor from './editor/RichTextEditor';
 import { createThread, updateThread } from '../../features/forum/ThreadSlice';
-import {
-  TagUpload,
-  Thread,
-  ThreadUpload,
-} from '../../features/forum/ForumModels';
+import { Thread, ThreadUpload } from '../../features/forum/ForumModels';
 import { useAppDispatch } from '../../hooks/reduxHooks';
 import { showNotif } from '../../features/errors/NotifSlice';
 import { NotifType } from '../../features/auth/authModels';
 // import SearchTags from './tags/SelectTags';
 import CreateTag from './tags/CreateTag';
-import { createTag, getSingleTagByTitle } from '../../features/forum/TagSlice';
 
 const style = {
   position: 'absolute',
@@ -125,7 +120,7 @@ export default function ThreadModal({ open, handleClose, thread }: Props) {
             }}
           >
             {/* <SearchTags tag={tag} setTag={setTag} /> */}
-            <CreateTag tag={tag} setTag={setTag} />
+            <CreateTag defaultValue={thread?.Tag} setTag={setTag} />
           </Box>
 
           <Button

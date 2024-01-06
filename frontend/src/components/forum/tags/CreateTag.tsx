@@ -1,19 +1,17 @@
 import { TextField } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { TagUpload } from '../../../features/forum/ForumModels';
 
 interface Props {
-  tag: string;
+  defaultValue: string | undefined;
   setTag: Dispatch<SetStateAction<string>>;
 }
 
-export default function CreateTag({ tag, setTag }: Props) {
+export default function CreateTag({ defaultValue, setTag }: Props) {
   const [value, setValue] = useState('');
 
   return (
     <TextField
-      // defaultValue=1
-      // sx={{ margin: 1 }}
+      defaultValue={defaultValue ? defaultValue : ''} // sx={{ margin: 1 }}
       // error={title.length === 0 ? true : false}
       value={value}
       id="outlined-error-helper-text"

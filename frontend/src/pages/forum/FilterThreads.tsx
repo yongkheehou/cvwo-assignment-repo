@@ -59,6 +59,8 @@ export default function FilterThreads({
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
+
+    console.log(filteredTags);
   };
 
   return (

@@ -8,6 +8,7 @@ import { getAllThreads } from '../../features/forum/ThreadSlice';
 import { INCREASING, TITLE } from '../../utils/constants';
 import ThreadModal from '../../components/forum/ThreadModal';
 import CreateIcon from '@mui/icons-material/Create';
+import FilterThreads from './FilterThreads';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -24,12 +25,10 @@ const Home = () => {
     console.log('rerendered');
     getThreads();
     setThreadUpdated(false);
-    // threadInfo = sortThreadsTwo(criteria, direction, threadInfo);
-    // console.log('thread info');
-    // console.log(threadInfo);
   }, [threadUpdated, criteria, direction]);
 
   const threadInfo = useAppSelector((state) => state.thread.ThreadArr);
+  const [filteredTags, setFilteredTags] = useState(['']);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -41,9 +40,13 @@ const Home = () => {
   };
 
   return (
-    <Stack sx={{ display: 'flex', alignItems: 'center' }}>
+    <Stack sx={{ display: 'flex', alignItems: 'center', p: 4 }}>
       <h1>Threads</h1>
-      <Box sx={{ minWidth: 600, maxWidth: 700 }}>
+      <FilterThreads
+        filteredTags={filteredTags}
+        setFilteredTags={setFilteredTags}
+      />
+      <Box sx={{ minWidth: 750, maxWidth: 750 }}>
         <Box
           sx={{
             display: 'flex',

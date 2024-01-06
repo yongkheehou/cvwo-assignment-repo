@@ -17,13 +17,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { logout } from '../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 
+const settings = ['Profile', 'Logout'];
+
 export default function NavBar() {
   const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
-
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
@@ -31,11 +32,6 @@ export default function NavBar() {
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
-
-  const handleCloseNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(null);
-  };
-
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -50,6 +46,7 @@ export default function NavBar() {
   const handleLogout = async () => {
     try {
       await dispatch(logout()).unwrap();
+      handleCloseUserMenu();
       navigate('/login');
     } catch (e) {
       console.error(e);
@@ -89,6 +86,7 @@ export default function NavBar() {
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
+                  // onClick={handleOpenNavMenu}
                   color="inherit"
                 >
                   <MenuIcon />
@@ -106,15 +104,26 @@ export default function NavBar() {
                     horizontal: 'left',
                   }}
                   open={Boolean(anchorElNav)}
+                  // onClose={handleCloseNavMenu}
                   sx={{
                     display: { xs: 'block', md: 'none' },
                   }}
                 >
-                  <MenuItem key="login" component="a" href="login">
+                  <MenuItem
+                    key="login"
+                    component="a"
+                    href="login"
+                    // onClick={handleCloseNavMenu}
+                  >
                     <Typography textAlign="center">{LOGIN}</Typography>
                   </MenuItem>
 
-                  <MenuItem key="signup" component="a" href="signup">
+                  <MenuItem
+                    key="signup"
+                    component="a"
+                    href="signup"
+                    // onClick={handleCloseNavMenu}
+                  >
                     <Typography textAlign="center">{SIGNUP}</Typography>
                   </MenuItem>
                 </Menu>
@@ -125,6 +134,7 @@ export default function NavBar() {
                   key="login"
                   component="a"
                   href="login"
+                  // onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   {LOGIN}
@@ -133,6 +143,7 @@ export default function NavBar() {
                   key="signup"
                   component="a"
                   href="signup"
+                  // onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   {SIGNUP}
@@ -151,7 +162,7 @@ export default function NavBar() {
               </Tooltip>
               <Menu
                 sx={{ mt: '45px' }}
-                id="menu-profile"
+                id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
                   vertical: 'top',

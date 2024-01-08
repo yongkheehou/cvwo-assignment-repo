@@ -37,15 +37,23 @@ const Home = () => {
     setThreadUpdated(false);
   }, [threadUpdated, criteria, direction]);
 
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
-    if (filteredTags.length !== 0 && threadInfo) {
-      setFilteredThreads(
-        threadInfo.filter((val) => filteredTags.includes(val.Tag)),
-      );
-    } else {
-      setFilteredThreads(threadInfo);
+    if (count != 0) {
+      if (filteredTags.length !== 0 && threadInfo) {
+        setFilteredThreads(
+          threadInfo.filter((val) => filteredTags.includes(val.Tag)),
+        );
+      } else {
+        setFilteredThreads(threadInfo);
+      }
     }
-  }, [filteredTags]);
+  }, [filteredTags, count]);
+
+  useEffect(() => {
+    setCount(count + 1);
+  }, [count]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -91,7 +99,7 @@ const Home = () => {
           <ForumDisplay
             criteria={criteria}
             direction={direction}
-            threadInfo={filteredThreads}
+            threadInfo={count === 0 ? threadInfo : filteredThreads}
             setThreadUpdated={setThreadUpdated}
           />
         </Box>

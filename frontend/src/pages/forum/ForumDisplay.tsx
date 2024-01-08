@@ -11,7 +11,7 @@ import { red } from '@mui/material/colors';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAppDispatch } from '../../hooks/reduxHooks';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { deleteThread, likeThread } from '../../features/forum/ThreadSlice';
 import React from 'react';
 import { showNotif } from '../../features/errors/NotifSlice';
@@ -56,6 +56,8 @@ export const ForumDisplay = ({
   const [openThreadModal, setOpenThreadModal] = useState(false);
   const [currentThread, setCurrentThread] = useState<Thread | null>(null);
 
+  const [expanded, setExpanded] = useState<number>(-1);
+
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -80,13 +82,6 @@ export const ForumDisplay = ({
     return sortThreadsTwo(criteria, direction, clonedThreads);
   }, [criteria, direction, threadInfo]);
 
-  // const sortedFilteredThreads = useMemo(() => {
-  //   // console.log('useMemo running');
-  //   return sortedThreads.filter((thread) => {
-  //     thread.Tag in filteredTags;
-  //   });
-  // }, [filteredTags]);
-
   const handleLike = async (thread: Thread) => {
     try {
       await dispatch(likeThread(thread)).unwrap();
@@ -103,18 +98,10 @@ export const ForumDisplay = ({
     }
   };
 
-  // useEffect(() => {
-  //   console.log('filter changed');
-  // }, [filteredTags]);
-
   if (Array.isArray(sortedThreads)) {
     return (
       <>
         {sortedThreads.map((thread) => {
-          const [expanded, setExpanded] = useState(false);
-          const handleExpandClick = () => {
-            setExpanded(!expanded);
-          };
           return (
             <>
               <Card
@@ -173,15 +160,19 @@ export const ForumDisplay = ({
                   <Typography>{thread.Likes}</Typography>
 
                   <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
+                    expand={expanded == thread.ID ? true : false}
+                    onClick={() => setExpanded(thread.ID)}
+                    aria-expanded={expanded == thread.ID ? true : false}
                     aria-label="show more"
                   >
                     <ExpandMoreIcon />
                   </ExpandMore>
                 </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <Collapse
+                  in={expanded == thread.ID ? true : false}
+                  timeout="auto"
+                  unmountOnExit
+                >
                   <CardContent>
                     {/* <Comment key={threadId.commentID}></Comment> */}
                   </CardContent>

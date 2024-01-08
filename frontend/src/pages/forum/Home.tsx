@@ -99,7 +99,7 @@ const Home = () => {
           <ForumDisplay
             criteria={criteria}
             direction={direction}
-            threadInfo={count === 0 ? threadInfo : filteredThreads}
+            threadInfo={filteredThreads}
             setThreadUpdated={setThreadUpdated}
           />
         </Box>

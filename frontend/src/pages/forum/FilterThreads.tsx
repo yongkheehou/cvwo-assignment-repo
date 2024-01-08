@@ -52,16 +52,17 @@ export default function FilterThreads({
   // const [personName, setPersonName] = React.useState<string[]>([]);
 
   const handleChange = (event: SelectChangeEvent<typeof filteredTags>) => {
-    const {
-      target: { value },
-    } = event;
     setFilteredTags(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+      typeof event.target.value === 'string'
+        ? event.target.value.split(',')
+        : event.target.value,
     );
-
-    console.log(filteredTags);
   };
+
+  // React.useEffect(() => {
+  //   console.log(filteredTags);
+  // }, [filteredTags]);
 
   return (
     <div>

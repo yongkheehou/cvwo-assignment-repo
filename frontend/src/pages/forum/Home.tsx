@@ -8,7 +8,8 @@ import { getAllThreads } from '../../features/forum/ThreadSlice';
 import { INCREASING, TITLE } from '../../utils/constants';
 import ThreadModal from '../../components/forum/ThreadModal';
 import CreateIcon from '@mui/icons-material/Create';
-// import FilterThreads from './FilterThreads';
+import FilterThreads from './FilterThreads';
+import { Thread } from '../../features/forum/ForumModels';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +22,10 @@ const Home = () => {
 
   const [threadUpdated, setThreadUpdated] = useState(false);
 
-  // const [filteredTags, setFilteredTags] = useState(['']);
+  const [filteredTags, setFilteredTags] = useState<string[]>([]);
+  const [filteredThreads, setFilteredThreads] = useState<
+    Thread[] | null | undefined
+  >(JSON.parse(JSON.stringify(threadInfo)));
 
   async function getThreads() {
     await dispatch(getAllThreads()).unwrap();
@@ -32,6 +36,16 @@ const Home = () => {
     getThreads();
     setThreadUpdated(false);
   }, [threadUpdated, criteria, direction]);
+
+  useEffect(() => {
+    if (filteredTags.length !== 0 && threadInfo) {
+      setFilteredThreads(
+        threadInfo.filter((val) => filteredTags.includes(val.Tag)),
+      );
+    } else {
+      setFilteredThreads(threadInfo);
+    }
+  }, [filteredTags]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -44,10 +58,10 @@ const Home = () => {
   return (
     <Stack sx={{ display: 'flex', alignItems: 'center', p: 4 }}>
       <h1>Threads</h1>
-      {/* <FilterThreads
+      <FilterThreads
         filteredTags={filteredTags}
         setFilteredTags={setFilteredTags}
-      /> */}
+      />
       <Box sx={{ minWidth: 750, maxWidth: 750 }}>
         <Box
           sx={{
@@ -77,7 +91,7 @@ const Home = () => {
           <ForumDisplay
             criteria={criteria}
             direction={direction}
-            threadInfo={threadInfo}
+            threadInfo={filteredThreads}
             setThreadUpdated={setThreadUpdated}
           />
         </Box>

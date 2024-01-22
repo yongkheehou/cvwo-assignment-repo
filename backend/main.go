@@ -17,7 +17,7 @@ func main() {
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://0.0.0.0", "http://localhost:3000"},
+		AllowOrigins:     []string{"http://0.0.0.0", "http://localhost:3000", "https://cvwo-assignment-repo.vercel.app"},
 		AllowHeaders:     []string{"Content-Type,access-control-allow-origin, access-control-allow-headers"},
 		AllowCredentials: true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},

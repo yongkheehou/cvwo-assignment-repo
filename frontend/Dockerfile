@@ -8,6 +8,7 @@ WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
 RUN npm install --production
+RUN npm install -D prettier eslint-config-prettier eslint-plugin-prettier
 # Copy app files
 COPY . .
 # Build the app

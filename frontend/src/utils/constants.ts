@@ -1,6 +1,6 @@
 // ports
 export const FRONTEND_URL="http://localhost:3500"
-export const BACKEND_URL="http://localhost:4000"
+export const BACKEND_URL="http://ec2-54-151-188-213.ap-southeast-1.compute.amazonaws.com:4000"
 
 // login/ signup texts
 export const LOGIN = "Login"

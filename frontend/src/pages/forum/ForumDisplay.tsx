@@ -121,9 +121,11 @@ export const ForumDisplay = ({
               >
                 <CardHeader
                   avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="user">
-                      {thread.UserID}
-                    </Avatar>
+                    <Avatar
+                      alt="Profile Picture"
+                      sx={{ bgcolor: red[500] }}
+                      aria-label="user"
+                    ></Avatar>
                   }
                   action={
                     <IconButton

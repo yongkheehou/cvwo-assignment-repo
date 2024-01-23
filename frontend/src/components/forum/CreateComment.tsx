@@ -22,7 +22,7 @@ export default function CreateComment({ thread }: CreateCommentProps) {
 
   return (
     <>
-      <h1>create comment form</h1>
+      <h1>Create Comment Here!</h1>
       <Editor setSubmittedContent={setSubmittedContent} content={undefined} />
       <Button
         variant="contained"

@@ -1,8 +1,23 @@
 export type Comment = {
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string;
   ID: number;
   Content: string;
   ThreadID: number;
   UserID: number;
+};
+
+export type CommentUpload = {
+  Content: string;
+  ThreadID: number;
+  UserID: number;
+};
+
+export type CommentApiState = {
+  CommentArr?: Comment[] | null;
+  Status: 'idle' | 'loading' | 'failed';
+  Error: string | null;
 };
 
 export type Thread = {

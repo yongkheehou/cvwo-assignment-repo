@@ -15,15 +15,16 @@ import { useMemo, useState } from 'react';
 import { deleteThread, likeThread } from '../../features/forum/ThreadSlice';
 import React from 'react';
 import { showNotif } from '../../features/errors/NotifSlice';
-import { Thread } from '../../features/forum/ForumModels';
+import { Thread, Comment } from '../../features/forum/ForumModels';
 import { NotifType } from '../../features/auth/authModels';
 import { ErrorWithMessage } from '../../features/sharedTypes';
 import { Dispatch, SetStateAction } from 'react';
 import { sortThreadsTwo } from './Helpers';
 import { Markup } from 'interweave';
 import { MoreVert } from '@mui/icons-material';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Box, Button, Menu, MenuItem } from '@mui/material';
 import ThreadModal from '../../components/forum/ThreadModal';
+import { CommentDisplay } from './CommentDisplay';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -44,6 +45,7 @@ interface Props {
   criteria: string;
   direction: string;
   threadInfo: Thread[] | null | undefined;
+  comments: Comment[] | null | undefined;
   setThreadUpdated: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -51,6 +53,7 @@ export const ForumDisplay = ({
   criteria,
   direction,
   threadInfo,
+  comments,
   setThreadUpdated,
 }: Props) => {
   const [openThreadModal, setOpenThreadModal] = useState(false);
@@ -100,8 +103,12 @@ export const ForumDisplay = ({
 
   if (Array.isArray(sortedThreads)) {
     return (
-      <>
+      <Box>
         {sortedThreads.map((thread) => {
+          const threadComments = comments?.filter(
+            (comment) => comment.ThreadID == thread.ID,
+          );
+
           return (
             <>
               <Card
@@ -174,6 +181,18 @@ export const ForumDisplay = ({
                   unmountOnExit
                 >
                   <CardContent>
+                    <Box
+                      sx={{
+                        overflow: 'auto',
+                        maxHeight: '75%',
+                      }}
+                    >
+                      <CommentDisplay threadComments={threadComments} />
+                      <Box>
+                        <h1>Form here</h1>
+                      </Box>
+                    </Box>
+
                     {/* <Comment key={threadId.commentID}></Comment> */}
                   </CardContent>
                 </Collapse>
@@ -194,9 +213,8 @@ export const ForumDisplay = ({
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseMenu}
               >
-                {/* how to pass thread id here??? */}
                 <MenuItem
-                  key="profile"
+                  key="update"
                   onClick={() => {
                     setOpenThreadModal(true);
                     // Closed the model when update menu itms is clicked
@@ -206,7 +224,7 @@ export const ForumDisplay = ({
                   <Typography textAlign="center">Update</Typography>
                 </MenuItem>
 
-                <MenuItem key="logout" onClick={() => onDelete(thread)}>
+                <MenuItem key="delete" onClick={() => onDelete(thread)}>
                   <Typography textAlign="center">Delete</Typography>
                 </MenuItem>
               </Menu>
@@ -219,7 +237,7 @@ export const ForumDisplay = ({
           handleClose={() => setOpenThreadModal(false)}
           thread={currentThread}
         />
-      </>
+      </Box>
     );
   } else {
     return <h1>No Threads Yet!</h1>;

@@ -128,27 +128,6 @@ export default function NavBar() {
                   </MenuItem>
                 </Menu>
               </Box>
-
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                <Button
-                  key="login"
-                  component="a"
-                  href="login"
-                  // onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  {LOGIN}
-                </Button>
-                <Button
-                  key="signup"
-                  component="a"
-                  href="signup"
-                  // onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  {SIGNUP}
-                </Button>
-              </Box>
             </Box>
           )}
 

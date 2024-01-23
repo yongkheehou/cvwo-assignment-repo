@@ -7,9 +7,9 @@ services:
       context: .
       target: production
     ports:
-      - "80:80"
-    networks:
-      - cvwo
-networks:
-  cvwo:
-    external: true
+      - "3000:3000"
+    # networks:
+    #   - cvwo
+# networks:
+#   cvwo:
+#     external: true

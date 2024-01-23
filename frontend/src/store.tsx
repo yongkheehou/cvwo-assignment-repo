@@ -4,6 +4,7 @@ import userReducer from './features/user/UserSlice';
 import notifReducer from './features/errors/NotifSlice';
 import threadReducer from './features/forum/ThreadSlice';
 import tagReducer from './features/forum/TagSlice';
+import commentReducer from './features/forum/CommentsSlice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     notif: notifReducer,
     thread: threadReducer,
     tag: tagReducer,
+    comment: commentReducer,
   },
 });
 

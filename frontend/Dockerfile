@@ -11,6 +11,7 @@ RUN npm install --production
 RUN npm install -D prettier eslint-config-prettier eslint-plugin-prettier
 # Copy app files
 COPY . .
+
 # Build the app
 RUN npm run build
 
@@ -24,6 +25,6 @@ COPY --from=builder /app/build /usr/share/nginx/html
 # Add your nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Expose port
-EXPOSE 80
+EXPOSE 3000
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]

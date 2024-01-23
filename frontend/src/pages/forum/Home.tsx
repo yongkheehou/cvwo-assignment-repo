@@ -10,10 +10,12 @@ import ThreadModal from '../../components/forum/ThreadModal';
 import CreateIcon from '@mui/icons-material/Create';
 import FilterThreads from './FilterThreads';
 import { Thread } from '../../features/forum/ForumModels';
+import { getAllComments } from '../../features/forum/CommentsSlice';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const threadInfo = useAppSelector((state) => state.thread.ThreadArr);
+  const comments = useAppSelector((state) => state.comment.CommentArr);
 
   const [open, setOpen] = React.useState(false);
 
@@ -31,9 +33,14 @@ const Home = () => {
     await dispatch(getAllThreads()).unwrap();
   }
 
+  async function getComments() {
+    await dispatch(getAllComments()).unwrap();
+  }
+
   useEffect(() => {
     console.log('rerendered');
     getThreads();
+    getComments();
     setThreadUpdated(false);
   }, [threadUpdated, criteria, direction]);
 
@@ -100,6 +107,7 @@ const Home = () => {
             criteria={criteria}
             direction={direction}
             threadInfo={filteredThreads}
+            comments={comments}
             setThreadUpdated={setThreadUpdated}
           />
         </Box>

@@ -14,7 +14,11 @@ import { MoreVert } from '@mui/icons-material';
 import { Markup } from 'interweave';
 import { useState } from 'react';
 import { useAppDispatch } from '../../hooks/reduxHooks';
-import { deleteComment } from '../../features/forum/CommentsSlice';
+import {
+  deleteComment,
+  updateComment,
+} from '../../features/forum/CommentsSlice';
+import CommentModal from '../../components/forum/CommentModal';
 
 interface CommentDisplayProps {
   threadComments: Comment[] | undefined;
@@ -39,11 +43,13 @@ export const CommentDisplay = ({ threadComments }: CommentDisplayProps) => {
 
   const dispatch = useAppDispatch();
 
-  // Made on delete funcation to perform delete thread and close model
+  // Made on delete funcation to perform delete comment and close model
   async function onDelete(comment: Comment) {
     handleCloseMenu();
     await dispatch(deleteComment(comment)).unwrap();
   }
+
+  const [openCommentModal, setOpenCommentModal] = useState(false);
 
   if (Array.isArray(threadComments) && threadComments.length >= 1) {
     return (
@@ -99,10 +105,27 @@ export const CommentDisplay = ({ threadComments }: CommentDisplayProps) => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseMenu}
                 >
-                  <MenuItem key="logout" onClick={() => onDelete(comment)}>
+                  <MenuItem
+                    key="update"
+                    onClick={() => {
+                      setCurrentComment(comment);
+                      setOpenCommentModal(true);
+                      // Closed the model when update menu itms is clicked
+                      handleCloseMenu();
+                    }}
+                  >
+                    <Typography textAlign="center">Update</Typography>
+                  </MenuItem>
+                  <MenuItem key="delete" onClick={() => onDelete(comment)}>
                     <Typography textAlign="center">Delete</Typography>
                   </MenuItem>
                 </Menu>
+
+                <CommentModal
+                  open={openCommentModal}
+                  handleClose={() => setOpenCommentModal(false)}
+                  comment={currentComment}
+                />
               </>
             );
           })

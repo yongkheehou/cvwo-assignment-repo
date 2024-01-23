@@ -15,6 +15,7 @@ interface CreateCommentProps {
 export default function CreateComment({ thread }: CreateCommentProps) {
   const dispatch = useAppDispatch();
   const [submittedContent, setSubmittedContent] = useState('');
+  const [content, setContent] = useState('');
 
   async function onCreateComment(data: CommentUpload) {
     await dispatch(createComment(data)).unwrap();
@@ -23,25 +24,26 @@ export default function CreateComment({ thread }: CreateCommentProps) {
   return (
     <>
       <h1>Create Comment Here!</h1>
-      <Editor setSubmittedContent={setSubmittedContent} content={undefined} />
+      <Editor setSubmittedContent={setSubmittedContent} content={content} />
       <Button
         variant="contained"
         sx={{ marginLeft: 'auto', mt: 2 }}
         size="small"
         onClick={() => {
-          if (submittedContent.length > 0) {
+          if (submittedContent.length > 10) {
             {
               onCreateComment({
                 Content: submittedContent,
                 ThreadID: thread.ID,
                 UserID: thread.UserID,
               });
+              setContent('');
             }
           } else {
             dispatch(
               showNotif({
                 open: true,
-                message: 'comment cannot be empty',
+                message: 'comment must be at least 10 characters',
                 notifType: NotifType.Error,
               }),
             );

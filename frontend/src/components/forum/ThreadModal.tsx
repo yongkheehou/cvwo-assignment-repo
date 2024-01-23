@@ -128,10 +128,11 @@ export default function ThreadModal({ open, handleClose, thread }: Props) {
             sx={{ marginLeft: 'auto', mt: 2 }}
             size="small"
             onClick={() => {
-              if (title.length > 0 && tag !== null) {
-                console.log(1010);
-                // check if tag exists, else create the tag
-                // onCreateTag(tag);
+              if (
+                title.length > 0 &&
+                submittedContent.length > 10 &&
+                tag !== null
+              ) {
                 {
                   !thread
                     ? onCreateThread({
@@ -158,9 +159,11 @@ export default function ThreadModal({ open, handleClose, thread }: Props) {
                   showNotif({
                     open: true,
                     message:
-                      title === null
-                        ? 'Title cannot be empty'
-                        : 'Tag cannot be empty',
+                      submittedContent.length < 10
+                        ? 'Content must be at least 10 characters'
+                        : title === null
+                          ? 'Title cannot be empty'
+                          : 'Tag cannot be empty',
                     notifType: NotifType.Error,
                   }),
                 );

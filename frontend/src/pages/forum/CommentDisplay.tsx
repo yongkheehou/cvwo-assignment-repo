@@ -77,7 +77,9 @@ export const CommentDisplay = ({ threadComments }: CommentDisplayProps) => {
                     )}
                   ></CardHeader>
                   <CardContent>
-                    <Typography>{comment.Content}</Typography>
+                    <Typography>
+                      <Markup content={comment.Content} />
+                    </Typography>
                   </CardContent>
                 </Card>
 

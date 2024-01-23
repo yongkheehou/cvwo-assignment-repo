@@ -25,6 +25,7 @@ import { MoreVert } from '@mui/icons-material';
 import { Box, Button, Menu, MenuItem } from '@mui/material';
 import ThreadModal from '../../components/forum/ThreadModal';
 import { CommentDisplay } from './CommentDisplay';
+import CreateComment from '../../components/forum/CreateComment';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -188,9 +189,7 @@ export const ForumDisplay = ({
                       }}
                     >
                       <CommentDisplay threadComments={threadComments} />
-                      <Box>
-                        <h1>Form here</h1>
-                      </Box>
+                      <CreateComment thread={thread} />
                     </Box>
 
                     {/* <Comment key={threadId.commentID}></Comment> */}

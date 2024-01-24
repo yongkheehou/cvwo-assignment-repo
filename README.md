@@ -2,7 +2,7 @@
 
 ## Name: Yong Khee Hou
 
-I built a web forum in React (frontend) and Go for my CVWO assignment.
+I built a web forum in React (frontend) and Go (backend) for my CVWO assignment.
 
 - Link to deployed website: http://www.kheehou-cvwo.com.s3-website-ap-southeast-1.amazonaws.com/
 

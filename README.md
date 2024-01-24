@@ -16,7 +16,7 @@ cd cvwo-assignment-repo
 ```
 - Create a .env file in the /backend folder, following the format of the sample.env file provided in the /backend folder
 
-- to start the backend service and postgresql database, run `make run` in the /backend folder
+- to start the backend service and PostgreSQL database, run `make run` in the /backend folder
 
 - to start the frontend service, run the following in the /frontend folder
 ```

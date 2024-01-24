@@ -13,5 +13,6 @@ frontend/*.pem
 
 # misc
 .DS_Store
+*.pdf
 
 npm-debug.log*

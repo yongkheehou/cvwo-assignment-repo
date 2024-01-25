@@ -6,7 +6,7 @@ I built a web forum in React (frontend) and Go (backend) for my CVWO assignment.
 
 - Link to deployed website: http://www.kheehou-cvwo.com.s3-website-ap-southeast-1.amazonaws.com/
 
-- Link to user guide video: 
+- Link to user manual: https://docs.google.com/document/d/11R_C-Ev4lB05A0K9dPju_4cKG1ubb-rcPb_ZSK_FNfU/edit?usp=sharing
 
 # Setup Guide
 - clone the repo locally

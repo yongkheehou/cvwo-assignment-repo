@@ -65,7 +65,6 @@ export const getUser = createAsyncThunk(
   },
 );
 
-// updateUser and deleteUser not implemented with buttons to send the axios request to backend yet
 export const updateUser = createAsyncThunk(
   'users/update',
   async (data: UserCompleteData, { rejectWithValue }) => {

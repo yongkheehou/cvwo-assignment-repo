@@ -1,6 +1,6 @@
 # Gossip With Go
 
-I built a web forum in React (frontend) and Go (backend) for my CVWO assignment.
+I built a web forum in React (frontend) and Go (backend).
 
 - Link to deployed website: http://www.kheehou-cvwo.com.s3-website-ap-southeast-1.amazonaws.com/
 
@@ -10,9 +10,9 @@ I built a web forum in React (frontend) and Go (backend) for my CVWO assignment.
 - clone the repo locally
 
 ```
-git clone https://github.com/yongkheehou/cvwo-assignment-repo.git
+git clone https://github.com/yongkheehou/web-forum.git
 
-cd cvwo-assignment-repo
+cd web-forum
 ```
 - Create a .env file in the /backend folder, following the format of the sample.env file provided in the /backend folder
 

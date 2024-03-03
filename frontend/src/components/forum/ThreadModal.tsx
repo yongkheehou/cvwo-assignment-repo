@@ -57,15 +57,6 @@ export default function ThreadModal({ open, handleClose, thread }: Props) {
     setTitle(text);
   }
 
-  // async function onCreateTag(data: TagUpload) {
-  //   try {
-  //     await dispatch(getSingleTagByTitle(data.Title)).unwrap();
-  //   } catch (e) {
-  //     console.log(e);
-  //     await dispatch(createTag(data)).unwrap;
-  //   }
-  // }
-
   async function onCreateThread(data: ThreadUpload) {
     await dispatch(createThread(data)).unwrap();
   }

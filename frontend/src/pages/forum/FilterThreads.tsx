@@ -49,7 +49,6 @@ export default function FilterThreads({
     : null;
 
   const theme = useTheme();
-  // const [personName, setPersonName] = React.useState<string[]>([]);
 
   const handleChange = (event: SelectChangeEvent<typeof filteredTags>) => {
     setFilteredTags(
@@ -59,10 +58,6 @@ export default function FilterThreads({
         : event.target.value,
     );
   };
-
-  // React.useEffect(() => {
-  //   console.log(filteredTags);
-  // }, [filteredTags]);
 
   return (
     <div>

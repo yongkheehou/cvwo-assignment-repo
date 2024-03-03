@@ -81,7 +81,6 @@ export const ForumDisplay = ({
   }
 
   const sortedThreads = useMemo(() => {
-    // console.log('useMemo running');
     const clonedThreads = [...(threadInfo as Thread[])];
     return sortThreadsTwo(criteria, direction, clonedThreads);
   }, [criteria, direction, threadInfo]);

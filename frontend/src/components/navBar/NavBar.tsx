@@ -8,7 +8,6 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ForumIcon from '@mui/icons-material/Forum';
@@ -16,8 +15,6 @@ import { LOGIN, SIGNUP } from '../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { logout } from '../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
-
-const settings = ['Profile', 'Logout'];
 
 export default function NavBar() {
   const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
@@ -29,9 +26,6 @@ export default function NavBar() {
     null,
   );
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };

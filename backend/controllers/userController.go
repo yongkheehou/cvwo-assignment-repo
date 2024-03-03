@@ -23,6 +23,7 @@ func GetAllUsers(c *gin.Context) {
 func GetSingleUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32) // base 10, 32 bits
 
+	// data validation
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid User ID",
@@ -33,6 +34,7 @@ func GetSingleUser(c *gin.Context) {
 
 	var user models.User
 
+	// querying DB for user
 	e := initializers.DB.Model(&models.User{}).Where("ID=?", id).Find(&user).Error
 
 	if e != nil {
@@ -49,7 +51,7 @@ func GetSingleUser(c *gin.Context) {
 }
 
 func SignUp(c *gin.Context) {
-	// get email/pass
+	// get email/ password
 	var payload models.User
 	if c.BindJSON(&payload) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -69,7 +71,7 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	// create the user
+	// create the user and store in DB
 	user := models.User{
 		Username:   payload.Username,
 		Password:   string(hashedPassword),
@@ -77,6 +79,7 @@ func SignUp(c *gin.Context) {
 	}
 	result := initializers.DB.Model(&models.User{}).Create(&user)
 
+	// check for errors
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Username already exists",
@@ -90,7 +93,7 @@ func SignUp(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	// get email/pass
+	// get email/ password
 	var payload models.Payload
 	if c.BindJSON(&payload) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -131,6 +134,7 @@ func Login(c *gin.Context) {
 
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
 
+	// check for errors
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to create JWT",
@@ -139,15 +143,16 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// affects website display and needs to be used in other routes
 	c.SetSameSite(http.SameSiteLaxMode)
 
-	// revise cookie settings for production
 	time, err := strconv.Atoi(os.Getenv("ACCESS_TOKEN_DURATION"))
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "check environment ACCESS_TOKEN_DURATION")
 	}
 
+	// set cookie
 	c.SetCookie("Auth", tokenString, time, "", "", true, true)
 
 	c.JSON(200, gin.H{
@@ -156,7 +161,7 @@ func Login(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-	c.SetCookie("Auth", "", -1, "", "", true, true)
+	c.SetCookie("Auth", "", -1, "", "", true, true) // clears the cookie
 }
 
 func ProfilePage(c *gin.Context) {
@@ -244,13 +249,13 @@ func RefreshToken(c *gin.Context) {
 
 		c.SetSameSite(http.SameSiteLaxMode)
 
-		// revise cookie settings for production
 		time, err := strconv.Atoi(os.Getenv("REFRESH_TOKEN_DURATION"))
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, "check environment REFRESH_TOKEN_DURATION")
 		}
 
+		// reset cookie to use the refresh token
 		c.SetCookie("Refresh", tokenString, time, "", "", true, true)
 
 		c.JSON(200, gin.H{

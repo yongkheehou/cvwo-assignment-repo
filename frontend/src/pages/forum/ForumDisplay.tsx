@@ -101,6 +101,7 @@ export const ForumDisplay = ({
     }
   };
 
+  // if there are threads, display them, else display a message
   if (Array.isArray(sortedThreads)) {
     return (
       <Box>
@@ -118,6 +119,7 @@ export const ForumDisplay = ({
                   marginBottom: 4,
                 }}
               >
+                {/* Headers containing user's avatar, thread title, and date posted */}
                 <CardHeader
                   avatar={
                     <Avatar
@@ -143,6 +145,7 @@ export const ForumDisplay = ({
                   )}
                 />
 
+                {/* Displays the main thread content */}
                 <CardContent>
                   <Typography
                     sx={{ mb: 5 }}
@@ -159,6 +162,8 @@ export const ForumDisplay = ({
                     <Markup content={`Tag: ${thread.Tag}`} />
                   </Typography>
                 </CardContent>
+
+                {/* current actions supported are liking thread and showing comments */}
                 <CardActions disableSpacing>
                   <IconButton
                     aria-label="like"
@@ -177,6 +182,8 @@ export const ForumDisplay = ({
                     <ExpandMoreIcon />
                   </ExpandMore>
                 </CardActions>
+
+                {/* toggle to show/ hide comments controlled by ExpandMore under CardActions */}
                 <Collapse
                   in={expanded == thread.ID ? true : false}
                   timeout="auto"
@@ -192,11 +199,11 @@ export const ForumDisplay = ({
                       <CommentDisplay threadComments={threadComments} />
                       <CreateComment thread={thread} />
                     </Box>
-
-                    {/* <Comment key={threadId.commentID}></Comment> */}
                   </CardContent>
                 </Collapse>
               </Card>
+
+              {/* Menu to update/ delete thread */}
               <Menu
                 sx={{ mt: '45px' }}
                 id="menu-appbar"

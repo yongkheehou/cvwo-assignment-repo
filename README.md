@@ -1,6 +1,4 @@
-# Gossip With Go Submission for CVWO 
-
-## Name: Yong Khee Hou
+# Gossip With Go
 
 I built a web forum in React (frontend) and Go (backend) for my CVWO assignment.
 

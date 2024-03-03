@@ -66,6 +66,9 @@ export const deleteComment = createAsyncThunk(
   },
 );
 
+// slice to update current state of comments and error messages
+// updates the store based on the status of the async functions
+// and the payload returned from the backend
 const commentsSlice = createSlice({
   name: 'comments',
   initialState,

@@ -4,14 +4,14 @@ import { User } from './authModels';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export default function useAuth(
-  authType: 'login' | 'signup',
+  authType: 'login' | 'signup' | 'logout',
   requestURL: string,
 ) {
   return createAsyncThunk(authType, async (data: User, { rejectWithValue }) => {
     try {
       const response = await AxiosInstance.post(requestURL, data);
 
-      localStorage.setItem('userInfo', JSON.stringify(response.data));
+      authType == 'logout' ? localStorage.removeItem('userInfo') : localStorage.setItem('userInfo', JSON.stringify(response.data));
 
       return response.data;
     } catch (error: unknown) {

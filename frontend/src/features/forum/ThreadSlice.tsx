@@ -15,6 +15,7 @@ const initialState: ThreadApiState = {
   Error: null,
 };
 
+// functions to read the threads
 export const getAllThreads = createAsyncThunk('thread', async () => {
   const response = await AxiosInstance.get(`/getthreads`);
   return response.data;
@@ -36,6 +37,7 @@ export const getFilteredThreads = createAsyncThunk(
   },
 );
 
+// functions to create, update, like, and delete threads
 export const createThread = createAsyncThunk(
   'createthread',
   async (data: ThreadUpload, { rejectWithValue }) => {
@@ -106,6 +108,9 @@ export const deleteThread = createAsyncThunk(
   },
 );
 
+// slice to update current state of thread and error messages
+// updates the store based on the status of the async functions
+// and the payload returned from the backend
 const threadSlice = createSlice({
   name: 'thread',
   initialState,

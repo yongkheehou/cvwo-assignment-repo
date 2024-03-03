@@ -74,6 +74,9 @@ export const deleteTag = createAsyncThunk(
   },
 );
 
+// slice to update current state of tags and error messages
+// updates the store based on the status of the async functions
+// and the payload returned from the backend
 const tagSlice = createSlice({
   name: 'tag',
   initialState,

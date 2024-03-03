@@ -110,7 +110,6 @@ export default function ThreadModal({ open, handleClose, thread }: Props) {
               mt: 2,
             }}
           >
-            {/* <SearchTags tag={tag} setTag={setTag} /> */}
             <CreateTag defaultValue={thread?.Tag} setTag={setTag} />
           </Box>
 

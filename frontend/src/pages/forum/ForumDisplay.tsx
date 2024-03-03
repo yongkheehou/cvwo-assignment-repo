@@ -19,7 +19,7 @@ import { Thread, Comment } from '../../features/forum/ForumModels';
 import { NotifType } from '../../features/auth/authModels';
 import { ErrorWithMessage } from '../../features/sharedTypes';
 import { Dispatch, SetStateAction } from 'react';
-import { sortThreadsTwo } from './Helpers';
+import { sortThreads } from './Helpers';
 import { Markup } from 'interweave';
 import { MoreVert } from '@mui/icons-material';
 import { Box, Button, Menu, MenuItem } from '@mui/material';
@@ -82,7 +82,7 @@ export const ForumDisplay = ({
 
   const sortedThreads = useMemo(() => {
     const clonedThreads = [...(threadInfo as Thread[])];
-    return sortThreadsTwo(criteria, direction, clonedThreads);
+    return sortThreads(criteria, direction, clonedThreads);
   }, [criteria, direction, threadInfo]);
 
   const handleLike = async (thread: Thread) => {

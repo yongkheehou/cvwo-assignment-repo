@@ -22,12 +22,13 @@ const initialState: AuthApiState = {
 };
 
 export const login = useAuth('login', '/login');
-
-export const signup = useAuth('signup', '/signup');
+export const signup = useAuth('signup', '/signup'); // backend handles the logic of creating user
 
 export const logout = createAsyncThunk(
+  // method signature for logout is different from login and signup
   'logout',
   async (_, { rejectWithValue }) => {
+    // does not take in any arguments
     try {
       const response = await AxiosInstance.post('/logout', {});
       const resData = response.data;

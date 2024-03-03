@@ -17,7 +17,7 @@ func main() {
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://0.0.0.0", "http://localhost:3000", "http://www.kheehou-cvwo.com.s3-website-ap-southeast-1.amazonaws.com", "http://www.kheehou-cvwo.com/"},
+		AllowOrigins:     []string{"http://localhost:3000", "http://www.kheehou-cvwo.com.s3-website-ap-southeast-1.amazonaws.com"},
 		AllowHeaders:     []string{"Content-Type,access-control-allow-origin, access-control-allow-headers"},
 		AllowCredentials: true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},

@@ -12,7 +12,6 @@ import { Thread, ThreadUpload } from '../../features/forum/ForumModels';
 import { useAppDispatch } from '../../hooks/reduxHooks';
 import { showNotif } from '../../features/errors/NotifSlice';
 import { NotifType } from '../../features/auth/authModels';
-// import SearchTags from './tags/SelectTags';
 import CreateTag from './tags/CreateTag';
 
 const style = {
@@ -38,6 +37,7 @@ interface Props {
 export default function ThreadModal({ open, handleClose, thread }: Props) {
   const dispatch = useAppDispatch();
 
+  // triggers a confirmation modal when the user tries to close the thread modal
   const { ask } = useConfirm();
 
   const handleAction = async () => {
@@ -64,6 +64,47 @@ export default function ThreadModal({ open, handleClose, thread }: Props) {
   async function onUpdateThread(data: Thread) {
     await dispatch(updateThread(data)).unwrap();
   }
+
+  // function to call async function to create or update thread
+  // or to show an error message if the user has not filled out the form correctly
+  const submitPost = () => {
+    if (title.length > 0 && submittedContent.length > 10 && tag !== null) {
+      {
+        !thread
+          ? onCreateThread({
+              Title: title,
+              Content: submittedContent,
+              Tag: tag,
+              Likes: 0,
+              UserID: 10000,
+              Comments: null,
+            })
+          : onUpdateThread({
+              ...thread,
+              Title: title,
+              Content: submittedContent,
+              Tag: tag,
+            });
+      }
+
+      setTitle('');
+
+      handleClose();
+    } else {
+      dispatch(
+        showNotif({
+          open: true,
+          message:
+            submittedContent.length < 10
+              ? 'Content must be at least 10 characters'
+              : title === null
+                ? 'Title cannot be empty'
+                : 'Tag cannot be empty',
+          notifType: NotifType.Error,
+        }),
+      );
+    }
+  };
 
   return (
     <div>
@@ -117,48 +158,7 @@ export default function ThreadModal({ open, handleClose, thread }: Props) {
             variant="contained"
             sx={{ marginLeft: 'auto', mt: 2 }}
             size="small"
-            onClick={() => {
-              if (
-                title.length > 0 &&
-                submittedContent.length > 10 &&
-                tag !== null
-              ) {
-                {
-                  !thread
-                    ? onCreateThread({
-                        Title: title,
-                        Content: submittedContent,
-                        Tag: tag,
-                        Likes: 0,
-                        UserID: 10000,
-                        Comments: null,
-                      })
-                    : onUpdateThread({
-                        ...thread,
-                        Title: title,
-                        Content: submittedContent,
-                        Tag: tag,
-                      });
-                }
-
-                setTitle('');
-
-                handleClose();
-              } else {
-                dispatch(
-                  showNotif({
-                    open: true,
-                    message:
-                      submittedContent.length < 10
-                        ? 'Content must be at least 10 characters'
-                        : title === null
-                          ? 'Title cannot be empty'
-                          : 'Tag cannot be empty',
-                    notifType: NotifType.Error,
-                  }),
-                );
-              }
-            }}
+            onClick={submitPost}
           >
             Post
           </Button>
